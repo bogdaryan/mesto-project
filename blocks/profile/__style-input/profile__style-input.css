@@ -1,0 +1,11 @@
+.profile__style-input {
+  border: 2px solid white;
+  border-radius: 2px;
+  padding: 12px 62px;
+  cursor: pointer;
+  transition: opacity 0.15s linear;
+}
+
+.profile__style-input:hover {
+  opacity: 0.6;
+}

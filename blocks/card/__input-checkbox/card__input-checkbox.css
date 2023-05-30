@@ -1,0 +1,7 @@
+.card__input-checkbox {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  visibility: hidden;
+  z-index: -999;
+}

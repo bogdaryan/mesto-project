@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Mesto</title>
+  </head>
+
+  <body class="page">
+    <header class="header">
+      <a class="logo" href="#">
+        <img class="logo__link" src="./images/logo.svg" alt="Логотип" />
+      </a>
+    </header>
+    <main class="main">
+      <section class="profile">
+        <div class="profile__box-avatar">
+          <img
+            class="profile__avatar"
+            src="./images/avatar.png"
+            alt="Фото Профиля"
+          />
+        </div>
+        <div class="profile__info">
+          <p class="profile__name">Жак-Ив Кусто</p>
+          <img
+            class="profile__edit-btn"
+            src="./images/edit-button.svg"
+            alt="Редактировать"
+            id="profile__edit-btn"
+          />
+          <p class="profile__description">Исследователь океана</p>
+        </div>
+        <label class="profile__label-add">
+          <input class="profile__input-add" type="file" />
+          <img
+            class="profile__style-input"
+            src="./images/add-btn.png"
+            alt="Добавить"
+          />
+        </label>
+      </section>
+
+      <section class="cards">
+        <ul class="cards__list">
+          <li class="card">
+            <div class="card__box-img">
+              <img
+                class="card__img"
+                src="./images/karachaevsk.jpg"
+                alt="Карачаевск"
+              />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Карачаевск</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card__box-img">
+              <img
+                class="card__img"
+                src="./images/elbrus.jpg"
+                alt="Гора Эльбрус"
+              />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Гора Эльбрус</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card__box-img">
+              <img class="card__img" src="./images/dombai.jpg" alt="Домбай" />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Домбай</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card__box-img">
+              <img
+                class="card__img"
+                src="./images/elbrus.jpg"
+                alt="Гора Эльбрус"
+              />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Гора Эльбрус</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card__box-img">
+              <img class="card__img" src="./images/dombai.jpg" alt="Домбай" />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Домбай</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+
+          <li class="card">
+            <div class="card__box-img">
+              <img
+                class="card__img"
+                src="./images/karachaevsk.jpg"
+                alt="Карачаево-Черкесская"
+              />
+            </div>
+            <div class="card__subtext">
+              <p class="card__title">Карачаево-Черкесская</p>
+
+              <label class="card__label">
+                <input class="card__input-checkbox" type="checkbox" />
+                <img src="./images/icon-heart.svg" alt="Лайк" />
+              </label>
+            </div>
+          </li>
+        </ul>
+        <span class="test"></span>
+      </section>
+    </main>
+  </body>
+</html>
