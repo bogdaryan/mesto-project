@@ -5,3 +5,9 @@
   margin: 0;
   align-self: end;
 }
+
+@media screen and (max-width: 730px) {
+  .profile__name {
+    font-size: 27px;
+  }
+}

@@ -8,5 +8,11 @@
   font-family: "Inter", "Arial", sans-serif;
   font-weight: normal;
   overflow-x: hidden;
-  margin-top: 45px;
+  padding: 0 20px;
+}
+
+@media screen and (max-width: 730px) {
+  .page {
+    padding: 0;
+  }
 }

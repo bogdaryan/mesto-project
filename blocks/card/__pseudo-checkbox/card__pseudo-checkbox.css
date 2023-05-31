@@ -1,0 +1,22 @@
+.card__pseudo-checkbox {
+  display: inline-block;
+  width: 22px;
+  height: 19px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  transition: opacity 0.15s linear;
+}
+
+.card__input-checkbox:enabled + .card__pseudo-checkbox {
+  background-image: url(../../../images/icon-disabled-heart.svg);
+}
+
+.card__input-checkbox:checked + .card__pseudo-checkbox {
+  background-image: url(../../../images/icon-active-heart.svg);
+}
+
+.card__input-checkbox:hover:not(:checked) + .card__pseudo-checkbox {
+  opacity: 0.6;
+}
