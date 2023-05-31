@@ -15,26 +15,17 @@
     </header>
     <main class="main">
       <section class="profile">
-        <div class="profile__box-avatar">
-          <img
-            class="profile__avatar"
-            src="./images/avatar.png"
-            alt="Фото Профиля"
-          />
-        </div>
+        <img
+          class="profile__avatar"
+          src="./images/avatar.png"
+          alt="Фото Профиля"
+        />
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <img
-            class="profile__edit-btn"
-            src="./images/edit-button.svg"
-            alt="Редактировать"
-          />
+          <button class="profile__edit-btn" aria-label="Редактировать"></button>
           <p class="profile__description">Исследователь океана</p>
         </div>
-        <label class="profile__label-add">
-          <input class="profile__input-add" type="file" />
-          <span class="profile__pseudo-input" ></span>
-        </label>
+        <button class="profile__add-btn"></button>
       </section>
 
       <section class="cards">
@@ -140,32 +131,40 @@
       <p class="footer__text">© 2020 Mesto Russia</p>
     </footer>
     <div class="popup">
-
       <div class="popup__inner">
-        
         <button class="popup__close-btn" aria-label="Закрыть"></button>
-        <h3 class="popup__title" >Редактировать профиль</h2>
-          <form class="popup__form" >
-            <label class="popup__label" >
-              <input class="popup__input popup__input-name" type="text" placeholder="Жак-Ив Кусто">
-            </label>
-  
-            <label class="popup__label">
-              <input class="popup__input popup__input-decription" type="text" placeholder="Исследователь океана">
-            </label>
-            <button class="popup__submit" type="submit">Сохранить</button>
-          </form>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <form class="popup__form">
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input-name"
+              type="text"
+              placeholder="Жак-Ив Кусто"
+            />
+          </label>
 
+          <label class="popup__label">
+            <input
+              class="popup__input popup__input-decription"
+              type="text"
+              placeholder="Исследователь океана"
+            />
+          </label>
+          <button class="popup__submit" type="submit">Сохранить</button>
+        </form>
       </div>
     </div>
     <script>
-      const popup = document.querySelector('.popup')
-      const editBtn = document.querySelector('.profile__edit-btn')
-      const closeBtn = document.querySelector('.popup__close-btn')
+      const popup = document.querySelector(".popup");
+      const editBtn = document.querySelector(".profile__edit-btn");
+      const closeBtn = document.querySelector(".popup__close-btn");
 
-      editBtn.addEventListener('click', () => popup.classList.add('popup_active'))
-      closeBtn.addEventListener('click', () => popup.classList.remove('popup_active'))
-
+      editBtn.addEventListener("click", () =>
+        popup.classList.add("popup_active")
+      );
+      closeBtn.addEventListener("click", () =>
+        popup.classList.remove("popup_active")
+      );
     </script>
   </body>
 </html>

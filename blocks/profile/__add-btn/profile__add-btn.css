@@ -1,0 +1,9 @@
+.profile__add-btn {
+  width: 150px;
+  height: 50px;
+  background: url(../../../images/add-btn.png) no-repeat center;
+  border: 1px solid white;
+}
+
+.profile__add-btn:hover {
+}
