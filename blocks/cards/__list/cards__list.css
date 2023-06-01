@@ -10,14 +10,14 @@
 
 @media screen and (max-width: 768px) {
   .cards__list {
-    grid-template-columns: repeat(2, fit-content(100%));
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
   }
 }
 
 @media screen and (max-width: 730px) {
   .cards__list {
-    grid-template-columns: fit-content(100%);
-    justify-content: center;
+    grid-template-columns: 282px;
+    gap: 22px;
   }
 }

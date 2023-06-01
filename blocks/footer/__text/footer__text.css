@@ -4,3 +4,9 @@
   line-height: 1.22;
   font-size: 18px;
 }
+
+@media screen and (max-width: 730px) {
+  .footer__text {
+    font-size: 14px;
+  }
+}
