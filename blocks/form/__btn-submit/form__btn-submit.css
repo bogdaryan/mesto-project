@@ -1,12 +1,12 @@
 .form__btn-submit {
   width: 100%;
-  margin-top: 48px;
   border: none;
   color: white;
   background: rgba(0, 0, 0, 1);
   padding: 15px 0;
   line-height: 1.22;
   font-size: 18px;
+  margin-top: 48px;
   border-radius: 2px;
   transition: background 0.2s linear;
   cursor: pointer;

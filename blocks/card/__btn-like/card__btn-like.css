@@ -9,7 +9,7 @@
   padding: 0;
 }
 
-.card__btn-like:hover:not(.card__btn-like_active) {
+.card__btn-like:hover {
   opacity: 0.5;
 }
 
