@@ -1,6 +1,5 @@
 .popup__inner {
   min-width: 430px;
-  min-height: 330px;
   display: flex;
   flex-direction: column;
   background: white;
