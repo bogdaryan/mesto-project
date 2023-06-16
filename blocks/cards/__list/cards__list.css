@@ -5,7 +5,8 @@
   display: grid;
   grid-template-columns: repeat(3, fit-content(282px));
   justify-content: space-between;
-  gap: 20px;
+  row-gap: 15px;
+  column-gap: 18px;
 }
 
 @media screen and (max-width: 850px) {
