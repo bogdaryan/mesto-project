@@ -25,6 +25,8 @@ const initialCards = [
   },
 ];
 
+// Create Cards //
+
 const cardList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#template-card").content;
 
@@ -37,4 +39,29 @@ initialCards.forEach(function createCard(card) {
   cardElement.querySelector(".card__title").textContent = card.name;
 
   cardList.append(cardElement);
+});
+
+// Open popUps //
+const containerProfile = document.querySelector(".profile");
+
+const btnAddPhoto = document.querySelector(".profile__add-btn");
+const btnEditProfile = document.querySelector(".profile__edit-btn");
+const popupAddPhoto = document.querySelector(".popup_add-photo");
+const popupEditProfile = document.querySelector(".popup_edit-profile");
+
+function openPopup(popup) {
+  popup.classList.add("popup_opened");
+}
+function closePopup(popup) {
+  popup.classList.remove("popup_opened");
+}
+
+containerProfile.addEventListener("click", (e) => {
+  switch (e.target) {
+    case btnEditProfile:
+      openPopup(popupEditProfile);
+      break;
+    case btnAddPhoto:
+      openPopup(popupAddPhoto);
+  }
 });
