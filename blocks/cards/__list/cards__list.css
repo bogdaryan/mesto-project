@@ -8,9 +8,9 @@
   gap: 20px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 850px) {
   .cards__list {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, fit-content(282px));
     justify-content: center;
   }
 }

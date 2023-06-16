@@ -33,101 +33,14 @@
       </section>
 
       <section class="cards">
-        <ul class="cards__list">
-          <li class="card">
-            <img
-              class="card__img"
-              src="./images/karachaevsk.jpg"
-              alt="Карачаевск"
-            />
-            <div class="card__subtext">
-              <h2 class="card__title">Карачаевск</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-
-          <li class="card">
-            <img
-              class="card__img"
-              src="./images/elbrus.jpg"
-              alt="Гора Эльбрус"
-            />
-            <div class="card__subtext">
-              <h2 class="card__title">Гора Эльбрус</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-
-          <li class="card">
-            <img class="card__img" src="./images/dombai.jpg" alt="Домбай" />
-            <div class="card__subtext">
-              <h2 class="card__title">Домбай</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-
-          <li class="card">
-            <img
-              class="card__img"
-              src="./images/elbrus.jpg"
-              alt="Гора Эльбрус"
-            />
-            <div class="card__subtext">
-              <h2 class="card__title">Гора Эльбрус</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-
-          <li class="card">
-            <img class="card__img" src="./images/dombai.jpg" alt="Домбай" />
-            <div class="card__subtext">
-              <h2 class="card__title">Домбай</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-
-          <li class="card">
-            <img
-              class="card__img"
-              src="./images/karachaevsk.jpg"
-              alt="Карачаево-Черкесская"
-            />
-            <div class="card__subtext">
-              <h2 class="card__title">Карачаево-Черкесская</h2>
-              <button
-                class="card__btn-like"
-                type="button"
-                aria-label="Поставить лайк"
-              ></button>
-            </div>
-          </li>
-        </ul>
+        <ul class="cards__list"></ul>
       </section>
     </main>
     <footer class="footer">
       <p class="footer__text">© 2020 Mesto Russia</p>
     </footer>
-    <div class="popup popup_opened">
+
+    <div class="popup">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -159,5 +72,20 @@
         </form>
       </div>
     </div>
+
+    <template id="template-card">
+      <li class="card">
+        <img class="card__img" />
+        <div class="card__subtext">
+          <h2 class="card__title"></h2>
+          <button
+            class="card__btn-like"
+            type="button"
+            aria-label="Поставить лайк"
+          ></button>
+        </div>
+      </li>
+    </template>
+    <script src="./index.js"></script>
   </body>
 </html>
