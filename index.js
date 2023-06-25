@@ -69,8 +69,8 @@ function openPopup(btn, popup) {
   btn.addEventListener("click", () => popup.classList.add("popup_opened"));  
 }
 
-openPopup(editPopup);
-openPopup(newItemPopup);
+openPopup(editPopupButton, editPopup);
+openPopup(newItemPopupButton, newItemPopup);
 
 
 // close popup //
