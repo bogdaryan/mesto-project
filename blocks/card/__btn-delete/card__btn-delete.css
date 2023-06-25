@@ -1,0 +1,11 @@
+.card__btn-delete {
+  width: 18px;
+  height: 19px;
+  border: none;
+  padding: 0;
+  background: url(../../../images/btn-trash.svg);
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}

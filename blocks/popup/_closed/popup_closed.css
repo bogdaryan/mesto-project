@@ -1,0 +1,3 @@
+.popup_closed {
+  animation: transition-hide 0.15s linear;
+}
