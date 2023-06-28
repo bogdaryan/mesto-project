@@ -58,6 +58,7 @@
               type="text"
               placeholder="Жак-Ив Кусто"
               name="user-name"
+              required 
             />
 
             <input
@@ -66,6 +67,7 @@
               type="text"
               placeholder="Исследователь океана"
               name="user-description"
+              required 
             />
             <button class="form__btn-submit" type="submit">Сохранить</button>
           </fieldset>
@@ -91,6 +93,7 @@
               type="text"
               placeholder="Название"
               name="image-title"
+              required 
             />
 
             <input
@@ -99,6 +102,7 @@
               type="text"
               placeholder="Ссылка на картинку"
               name="image-src"
+              required 
             />
             <button class="form__btn-submit" type="submit">Создать</button>
           </fieldset>
@@ -124,6 +128,17 @@
         </div>
       </li>
     </template>
+
+    <template id="template-full-size">
+      <div class="full-size" >
+        <div class="full-size__inner">
+          <button class="full-size__btn-close" type="button" aria-label="Закрыть" ></button>
+          <img class="full-size__image" src="" alt="">
+          <p class="full-size__title"></p>
+        </div>
+      </div>
+    </template>
+
     <script src="./index.js"></script>
   </body>
 </html>

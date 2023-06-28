@@ -45,3 +45,11 @@
 @import url("../blocks/form/__input-text/form__input-text.css");
 @import url("../blocks/form/_color-light/form__input-text_color-light.css");
 @import url("../blocks/form/__btn-submit/form__btn-submit.css");
+
+@import url("../blocks/full-size/full-size.css");
+@import url("../blocks/full-size/__btn-close/full-size__btn-close.css");
+@import url("../blocks/full-size/__image/full-size__image.css");
+@import url("../blocks/full-size/__title/full-size__title.css");
+@import url("../blocks/full-size/__inner/full-size__inner.css");
+
+
