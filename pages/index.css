@@ -46,6 +46,7 @@
 @import url("../blocks/form/_color-light/form__input-text_color-light.css");
 @import url("../blocks/form/__btn-submit/form__btn-submit.css");
 
+@import url("../blocks/popup-type_full-size/popup-type_full-size.css");
 @import url("../blocks/popup-type_full-size/__inner/popup-type_full-size__inner.css");
 @import url("../blocks/popup-type_full-size/__image/popup-type_full-size__image.css");
 @import url("../blocks/popup-type_full-size/__title/popup-type_full-size__title.css");

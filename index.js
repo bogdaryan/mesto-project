@@ -24,7 +24,7 @@ function generateCards() {
 }
 generateCards();
 
-// func card //
+// Init Card //
 function initCard(name, link) {
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   const image = card.querySelector(".card__img");
@@ -46,7 +46,7 @@ function initCard(name, link) {
     e.target.closest(".card").remove();
   });
 
-  //event Open Image
+  // Open Image
   const bigImage = fullSizePupup.querySelector(".popup-type_full-size__image");
   const titleBigImage = fullSizePupup.querySelector(
     ".popup-type_full-size__title"
@@ -67,44 +67,47 @@ function initCard(name, link) {
 }
 
 // add new Card //
+const formNewCard = newItemPopup.querySelector(".form");
 const nameImageInput = document.querySelector("#image-title");
 const linkImageInput = document.querySelector("#image-src");
 
-newItemPopup.addEventListener("click", (e) => {
+formNewCard.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (e.target.className != "form__btn-submit") return;
-
   const card = initCard(nameImageInput.value, linkImageInput.value);
   cardList.prepend(card);
+
+  formNewCard.reset();
+  closePopup(newItemPopup);
 });
 
 // edit profile //
-editPopup.addEventListener("click", (e) => {
-  if (e.target.className != "form__btn-submit") return;
+const formEdit = editPopup.querySelector(".form");
+formEdit.addEventListener("submit", (e) => {
   e.preventDefault();
 
   profileName.textContent = formUserName.value;
   userDescription.textContent = formUserDescription.value;
+
+  formEdit.reset();
+  closePopup(editPopup);
 });
 
 // Open popup //
 const openPopup = (popup) => popup.classList.add("popup_opened");
-
 editPopupButton.addEventListener("click", () => openPopup(editPopup));
 newItemPopupButton.addEventListener("click", () => openPopup(newItemPopup));
 
-// close popup //
+// Close popup //
 function closePopup(popup) {
   popup.classList.add("popup_closed");
 
   setTimeout(() => {
     popup.classList.remove("popup_opened");
     popup.classList.remove("popup_closed");
-  }, 145);
+  }, 245);
 }
 
 const page = document.querySelector(".page");
-
 page.addEventListener("click", (e) => {
   if (!e.target.className.includes("popup__btn-close")) return;
   const popup = e.target.closest(".popup");
