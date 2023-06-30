@@ -3,9 +3,6 @@
 @import url("../vendor/fonts.css");
 @import url("../blocks/page/page.css");
 
-@import url("../blocks/transition-show/transition-show.css");
-@import url("../blocks/transition-hide/transition-hide.css");
-
 @import url("../blocks/logo/logo.css");
 @import url("../blocks/logo/__img/logo__img.css");
 
@@ -35,7 +32,6 @@
 
 @import url("../blocks/popup/popup.css");
 @import url("../blocks/popup/_opened/popup_opened.css");
-@import url("../blocks/popup/_closed/popup_closed.css");
 @import url("../blocks/popup/__inner/popup__inner.css");
 @import url("../blocks/popup/__btn-close/popup__btn-close.css");
 

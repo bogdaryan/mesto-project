@@ -1,5 +1,4 @@
 .popup_opened {
-  display: grid !important;
-  transition: opacity 0.15s linear;
-  animation: transition-show 0.25s linear;
+  visibility: visible;
+  opacity: 1;
 }
