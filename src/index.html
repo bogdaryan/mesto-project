@@ -3,21 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
     <title>Mesto</title>
   </head>
 
   <body class="page">
     <header class="header">
       <a class="logo" href="#">
-        <img class="logo__img" src="./images/logo.svg" alt="Логотип" />
+        <img class="logo__img" src="<%=require('./images/logo.svg')%>" alt="Логотип" />
       </a>
     </header>
     <main class="main">
       <section class="profile">
         <img
           class="profile__avatar"
-          src="./images/avatar.png"
+          src="<%=require('./images/avatar.png')%>"
           alt="Фото Профиля"
         />
         <div class="profile__info">
@@ -40,7 +39,7 @@
       <p class="footer__text">© 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup popup_type_edit-profile">
+    <div class="popup popup_opened popup_type_edit-profile">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -48,28 +47,33 @@
           aria-label="Закрыть"
         ></button>
 
-        <form name="edit-form" class="form">
+        <form name="edit-form" class="form" novalidate>
           <h3 class="form__title">Редактировать профиль</h3>
 
           <fieldset class="form__input-container">
+            <label class="form__field">
+              <input
+                class="form__input"
+                id="name-input"
+                type="text"
+                placeholder="Жак-Ив Кусто"
+                name="user-name"
+                required 
+              />
+              <span class="name-input-error form__input-error" ></span>
+          </label>
+          <label class="form__field" >
             <input
-              class="form__input-text"
-              id="user-name"
-              type="text"
-              placeholder="Жак-Ив Кусто"
-              name="user-name"
-              required 
-            />
-
-            <input
-              class="form__input-text"
-              id="user-description"
+              class="form__input"
+              id="description-input"
               type="text"
               placeholder="Исследователь океана"
               name="user-description"
-              required 
+              required
             />
-            <button class="form__btn-submit" type="submit">Сохранить</button>
+            <span class="description-input-error form__input-error" ></span>
+          </label>
+            <button class="form__submit" disabled type="submit">Сохранить</button>
           </fieldset>
         </form>
       </div>
@@ -83,35 +87,42 @@
           aria-label="Закрыть"
         ></button>
 
-        <form name="edit-form" class="form">
+        <form name="edit-form" class="form" novalidate>
           <h3 class="form__title">Новое место</h3>
 
           <fieldset class="form__input-container">
+            <label class="form__field">
+              <input
+                class="form__input form__input_color-light"
+                id="title-input"
+                type="text"
+                placeholder="Название"
+                name="image-title"
+                required 
+              />
+              <span class="title-input-error form__input-error" ></span>
+          </label>
+          <label class="form__field">
             <input
-              class="form__input-text form__input-text_color-light"
-              id="image-title"
-              type="text"
-              placeholder="Название"
-              name="image-title"
-              required 
-            />
-
-            <input
-              class="form__input-text form__input-text_color-light"
-              id="image-src"
+              class="form__input form__input_color-light"
+              id="image-link-input"
               type="text"
               placeholder="Ссылка на картинку"
               name="image-src"
               required 
             />
-            <button class="form__btn-submit" type="submit">Создать</button>
+            <span class="image-link-input-error form__input-error" ></span>
+
+          </label>
+
+            <button class="form__submit" type="submit">Создать</button>
           </fieldset>
         </form>
       </div>
     </div>
 
     <div class="popup popup-type_full-size" >
-      <div class="popup-type_full-size__inner">
+      <div class="popup__inner popup-type_full-size__inner">
         <button class="popup__btn-close" type="button" aria-label="Закрыть" ></button>
         <img class="popup-type_full-size__image" src="" alt="">
         <p class="popup-type_full-size__title"></p>
@@ -138,7 +149,5 @@
     </template>
 
 
-    <script src="./cards.js"></script>
-    <script src="./index.js"></script>
   </body>
 </html>

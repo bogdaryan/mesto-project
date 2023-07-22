@@ -1,0 +1,13 @@
+.form__input_color-light::placeholder {
+  color: #c4c4c4;
+  opacity: inherit;
+}
+.form__input_color-light::-webkit-input-placeholder {
+  color: #c4c4c4;
+  opacity: inherit;
+}
+
+.form__input_color-light::-moz-placeholder {
+  color: #c4c4c4;
+  opacity: inherit;
+}

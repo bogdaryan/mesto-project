@@ -1,3 +1,6 @@
+import "./pages/index.css";
+import { initialCards } from "./data.js";
+
 // Buttons
 const newItemPopupButton = document.querySelector(".profile__add-btn");
 const editPopupButton = document.querySelector(".profile__edit-btn");
@@ -78,16 +81,18 @@ formNewCard.addEventListener("submit", (e) => {
 });
 
 // edit profile //
-const formEdit = editPopup.querySelector(".form");
-formEdit.addEventListener("submit", (e) => {
-  e.preventDefault();
+export const editProfile = () => {
+  const formEdit = editPopup.querySelector(".form");
+  formEdit.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  profileName.textContent = formUserName.value;
-  userDescription.textContent = formUserDescription.value;
+    profileName.textContent = formUserName.value;
+    userDescription.textContent = formUserDescription.value;
 
-  formEdit.reset();
-  closePopup(editPopup);
-});
+    formEdit.reset();
+    closePopup(editPopup);
+  });
+};
 
 // Open popup //
 const openPopup = (popup) => popup.classList.add("popup_opened");
@@ -95,14 +100,16 @@ editPopupButton.addEventListener("click", () => openPopup(editPopup));
 newItemPopupButton.addEventListener("click", () => openPopup(newItemPopup));
 
 // Close popup //
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-}
+const closePopup = (popup) => popup.classList.remove("popup_opened");
 
 const page = document.querySelector(".page");
 page.addEventListener("click", (e) => {
-  if (!e.target.className.includes("popup__btn-close")) return;
-  const popup = e.target.closest(".popup");
+  const isPopUp = e.target.className.includes("popup");
+  const isBtnClose = e.target.className.includes("popup__btn-close");
 
+  if (e.target.closest(".popup__inner") && !isBtnClose) return;
+  if (!isPopUp) return;
+
+  const popup = e.target.closest(".popup");
   closePopup(popup);
 });
