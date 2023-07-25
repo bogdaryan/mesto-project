@@ -39,7 +39,7 @@
       <p class="footer__text">© 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup popup_opened popup_type_edit-profile">
+    <div class="popup popup_type_edit-profile">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -58,7 +58,11 @@
                 type="text"
                 placeholder="Жак-Ив Кусто"
                 name="user-name"
+                minlength="2"
+                maxlength="40"
                 required 
+                pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
               <span class="name-input-error form__input-error" ></span>
           </label>
@@ -69,11 +73,13 @@
               type="text"
               placeholder="Исследователь океана"
               name="user-description"
+              minlength="2"
+              maxlength="200"
               required
             />
             <span class="description-input-error form__input-error" ></span>
           </label>
-            <button class="form__submit" disabled type="submit">Сохранить</button>
+            <button class="form__submit" type="submit">Сохранить</button>
           </fieldset>
         </form>
       </div>
@@ -99,6 +105,8 @@
                 placeholder="Название"
                 name="image-title"
                 required 
+                pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
               <span class="title-input-error form__input-error" ></span>
           </label>
@@ -106,7 +114,7 @@
             <input
               class="form__input form__input_color-light"
               id="image-link-input"
-              type="text"
+              type="url"
               placeholder="Ссылка на картинку"
               name="image-src"
               required 

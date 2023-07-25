@@ -4,7 +4,7 @@
   "description": "<h1 align=\"center\"> <a href='https://bogdaryan.github.io/mesto-project/' target='_blank'>Mesto (JavaScript)</a> </h1>\r <h2 align=\"center\">Проектная работа #3 (Спринт №1)</h2>",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production ",
     "dev": "webpack server"
   },
   "author": "",

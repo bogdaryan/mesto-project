@@ -1,115 +1,34 @@
 import "./pages/index.css";
-import { initialCards } from "./data.js";
+import { generateCards } from "./components/cards.js";
+import { editPopup } from "./components/modal.js";
+import { closePopup } from "./components/utils.js";
+import { enableValidation } from "./components/validate.js";
 
-// Buttons
-const newItemPopupButton = document.querySelector(".profile__add-btn");
-const editPopupButton = document.querySelector(".profile__edit-btn");
-// Popups
-const newItemPopup = document.querySelector(".popup_type_add-photo");
-const editPopup = document.querySelector(".popup_type_edit-profile");
-const fullSizePupup = document.querySelector(".popup-type_full-size");
-
-const profileName = document.querySelector(".profile__name");
-const userDescription = document.querySelector(".profile__description");
-const formUserName = document.querySelector("#user-name");
-const formUserDescription = document.querySelector("#user-description");
-
-const cardTemplate = document.querySelector("#template-card").content;
-const cardList = document.querySelector(".cards__list");
-
-const bigImage = fullSizePupup.querySelector(".popup-type_full-size__image");
-const titleBigImage = fullSizePupup.querySelector(
-  ".popup-type_full-size__title"
-);
-
-// Create Cards //
-function generateCards() {
-  cardList.innerHTML = " ";
-
-  initialCards.forEach((card) => {
-    cardList.prepend(initCard(card.name, card.link));
-  });
-}
 generateCards();
 
-// Init Card //
-function initCard(name, link) {
-  const card = cardTemplate.querySelector(".card").cloneNode(true);
-  const image = card.querySelector(".card__img");
-  const title = card.querySelector(".card__title");
-  const btnLike = card.querySelector(".card__btn-like");
-  const btnDelete = card.querySelector(".card__btn-delete");
+const editForm = document.forms["edit-form"];
+const profileName = document.querySelector(".profile__name");
+const userDescription = document.querySelector(".profile__description");
 
-  image.src = link;
-  image.alt = name;
-  title.textContent = name;
-
-  // Like
-  btnLike.addEventListener("click", (e) =>
-    e.target.classList.toggle("card__btn-like_active")
-  );
-
-  // Delete
-  btnDelete.addEventListener("click", (e) => {
-    e.target.closest(".card").remove();
-  });
-
-  // Open Image
-  image.addEventListener("click", (e) => {
-    openPopup(fullSizePupup);
-
-    bigImage.src = link;
-    bigImage.alt = name;
-    titleBigImage.textContent = name;
-  });
-
-  return card;
-}
-
-// add new Card //
-const formNewCard = newItemPopup.querySelector(".form");
-const nameImageInput = document.querySelector("#image-title");
-const linkImageInput = document.querySelector("#image-src");
-
-formNewCard.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const card = initCard(nameImageInput.value, linkImageInput.value);
-  cardList.prepend(card);
-
-  formNewCard.reset();
-  closePopup(newItemPopup);
-});
+const formUserName = editForm.elements["user-name"];
+const formUserDescription = editForm.elements["user-description"];
 
 // edit profile //
-export const editProfile = () => {
-  const formEdit = editPopup.querySelector(".form");
-  formEdit.addEventListener("submit", (e) => {
-    e.preventDefault();
+editForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    profileName.textContent = formUserName.value;
-    userDescription.textContent = formUserDescription.value;
+  profileName.textContent = formUserName.value;
+  userDescription.textContent = formUserDescription.value;
 
-    formEdit.reset();
-    closePopup(editPopup);
-  });
-};
+  editForm.reset();
+  closePopup(editPopup);
+});
 
-// Open popup //
-const openPopup = (popup) => popup.classList.add("popup_opened");
-editPopupButton.addEventListener("click", () => openPopup(editPopup));
-newItemPopupButton.addEventListener("click", () => openPopup(newItemPopup));
-
-// Close popup //
-const closePopup = (popup) => popup.classList.remove("popup_opened");
-
-const page = document.querySelector(".page");
-page.addEventListener("click", (e) => {
-  const isPopUp = e.target.className.includes("popup");
-  const isBtnClose = e.target.className.includes("popup__btn-close");
-
-  if (e.target.closest(".popup__inner") && !isBtnClose) return;
-  if (!isPopUp) return;
-
-  const popup = e.target.closest(".popup");
-  closePopup(popup);
+enableValidation({
+  formSelector: "form",
+  inputSelector: ".form__input",
+  submitButtonSelector: ".form__submit",
+  inactiveButtonClass: "form__submit_disabled",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_visible",
 });
