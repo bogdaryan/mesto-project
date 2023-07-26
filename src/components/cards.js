@@ -61,5 +61,6 @@ formNewCard.addEventListener("submit", (e) => {
   cardList.prepend(card);
 
   formNewCard.reset();
+
   closePopup(newItemPopup);
 });

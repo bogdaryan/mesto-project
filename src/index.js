@@ -1,17 +1,17 @@
 import "./pages/index.css";
 import { generateCards } from "./components/cards.js";
 import { editPopup } from "./components/modal.js";
-import { closePopup } from "./components/utils.js";
+import {
+  closePopup,
+  profileName,
+  userDescription,
+  formUserName,
+  formUserDescription,
+  editForm,
+} from "./components/utils.js";
 import { enableValidation } from "./components/validate.js";
 
 generateCards();
-
-const editForm = document.forms["edit-form"];
-const profileName = document.querySelector(".profile__name");
-const userDescription = document.querySelector(".profile__description");
-
-const formUserName = editForm.elements["user-name"];
-const formUserDescription = editForm.elements["user-description"];
 
 // edit profile //
 editForm.addEventListener("submit", (e) => {

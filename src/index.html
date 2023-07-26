@@ -76,6 +76,8 @@
               minlength="2"
               maxlength="200"
               required
+              pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
             />
             <span class="description-input-error form__input-error" ></span>
           </label>
