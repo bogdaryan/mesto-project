@@ -5,18 +5,19 @@ export const editForm = document.forms["edit-form"];
 export const formUserName = editForm.elements["user-name"];
 export const formUserDescription = editForm.elements["user-description"];
 
-function setCloseByEscape(page, popup) {
-  page.addEventListener("keyup", (e) => {
-    if (e.key === "Escape") closePopup(popup);
-  });
+function closeByEscape(e) {
+  if (e.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_opened");
+    closePopup(openedPopup);
+  }
 }
 
-export const openPopup = (popup) => {
+export function openPopup(popup) {
   popup.classList.add("popup_opened");
-  setCloseByEscape(window, popup);
-};
+  document.addEventListener("keydown", closeByEscape);
+}
 
-export const closePopup = (popup) => {
+export function closePopup(popup) {
   popup.classList.remove("popup_opened");
-  window.removeEventListener("keyup", setCloseByEscape);
-};
+  document.addEventListener("keydown", closeByEscape);
+}

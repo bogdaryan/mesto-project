@@ -23,6 +23,7 @@ editPopupButton.addEventListener("click", () => {
 newItemPopupButton.addEventListener("click", () => {
   const btn = newItemPopup.querySelector(".form__submit");
   btn.classList.add("form__submit_disabled");
+  btn.disabled = true;
 
   openPopup(newItemPopup);
 });
