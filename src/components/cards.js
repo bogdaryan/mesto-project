@@ -1,6 +1,13 @@
 import { closePopup, openPopup } from "./utils.js";
-import { initialCards } from "./data.js";
 import { newItemPopup } from "./modal.js";
+import {
+  deleteCard,
+  deleteLike,
+  getCards,
+  getUser,
+  postCard,
+  setLike,
+} from "./api.js";
 
 const cardTemplate = document.querySelector("#template-card").content;
 const fullSizePupup = document.querySelector(".popup-type_full-size");
@@ -8,57 +15,92 @@ const bigImage = fullSizePupup.querySelector(".popup-type_full-size__image");
 const titleBigImage = fullSizePupup.querySelector(
   ".popup-type_full-size__title"
 );
-const cardList = document.querySelector(".cards__list");
+const cardListElement = document.querySelector(".cards__list");
 
-function initCard(name, link) {
+const user = await getUser().then((res) => res);
+
+function initCard(itemCard) {
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   const image = card.querySelector(".card__img");
   const title = card.querySelector(".card__title");
   const btnLike = card.querySelector(".card__btn-like");
+  const numberLikes = card.querySelector(".card__number-of-likes");
   const btnDelete = card.querySelector(".card__btn-delete");
 
-  image.src = link;
-  image.alt = name;
-  title.textContent = name;
+  const arrLikes = itemCard.likes;
 
-  // Like
-  btnLike.addEventListener("click", (e) =>
-    e.target.classList.toggle("card__btn-like_active")
-  );
+  image.src = itemCard.link;
+  image.alt = itemCard.name;
+  title.textContent = itemCard.name;
+  numberLikes.textContent = itemCard.likes.length;
+
+  // Like Event
+  btnLike.addEventListener("click", (e) => {
+    // const isLikeExist = itemCard.likes.some((like) => like._id === user._id);
+    const isLikeExist = btnLike.className.includes("card__btn-like_active");
+
+    if (!isLikeExist) {
+      btnLike.classList.add("card__btn-like_active");
+      setLike(itemCard._id).then((card) => {
+        numberLikes.textContent = card.likes.length;
+      });
+    } else {
+      btnLike.classList.remove("card__btn-like_active");
+      deleteLike(itemCard._id).then((card) => {
+        numberLikes.textContent = card.likes.length;
+      });
+    }
+  });
+
+  for (const userWhoLikes of arrLikes) {
+    if (userWhoLikes._id === user._id) {
+      btnLike.classList.add("card__btn-like_active");
+    } else {
+      btnLike.classList.remove("card__btn-like_active");
+    }
+  }
 
   // Delete
-  btnDelete.addEventListener("click", (e) => {
-    e.target.closest(".card").remove();
+  const isUserCard = user._id === itemCard.owner._id;
+  if (!isUserCard) btnDelete.remove();
+
+  btnDelete.addEventListener("click", () => {
+    deleteCard(itemCard._id);
+    card.remove();
   });
 
   // Open Image
-  image.addEventListener("click", (e) => {
+  image.addEventListener("click", () => {
     openPopup(fullSizePupup);
 
-    bigImage.src = link;
-    bigImage.alt = name;
-    titleBigImage.textContent = name;
+    bigImage.src = itemCard.link;
+    bigImage.alt = itemCard.name;
+    titleBigImage.textContent = itemCard.name;
   });
 
   return card;
 }
 
-export function generateCards() {
-  cardList.innerHTML = " ";
+export async function generateCards() {
+  const usersCards = await getCards().then((res) => res);
 
-  initialCards.forEach((card) => {
-    cardList.prepend(initCard(card.name, card.link));
-  });
+  cardListElement.innerHTML = " ";
+
+  for (const card of usersCards) {
+    cardListElement.prepend(initCard(card));
+  }
 }
 
 const formNewCard = newItemPopup.querySelector(".form");
 const nameImageInput = document.querySelector("#title-input");
 const linkImageInput = document.querySelector("#image-link-input");
 
-formNewCard.addEventListener("submit", (e) => {
+formNewCard.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const card = initCard(nameImageInput.value, linkImageInput.value);
-  cardList.prepend(card);
+
+  postCard(nameImageInput.value, linkImageInput.value).finally(() => {
+    generateCards();
+  });
 
   formNewCard.reset();
 

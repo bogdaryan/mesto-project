@@ -9,8 +9,14 @@ import {
 
 const newItemPopupButton = document.querySelector(".profile__add-btn");
 const editPopupButton = document.querySelector(".profile__edit-btn");
-const newItemPopup = document.querySelector(".popup_type_add-photo");
-const editPopup = document.querySelector(".popup_type_edit-profile");
+
+export const newItemPopup = document.querySelector(".popup_type_add-photo");
+export const editPopup = document.querySelector(".popup_type_edit-profile");
+export const popupEditAvatar = document.querySelector(
+  ".popup_type_edit-avatar"
+);
+
+const imageEditBtn = document.querySelector(".profile__image-edit");
 
 // Open popup //
 editPopupButton.addEventListener("click", () => {
@@ -28,6 +34,10 @@ newItemPopupButton.addEventListener("click", () => {
   openPopup(newItemPopup);
 });
 
+imageEditBtn.addEventListener("click", () => {
+  openPopup(popupEditAvatar);
+});
+
 // Close popup //
 window.addEventListener("click", (e) => {
   const isPopUp = e.target.className.includes("popup");
@@ -39,5 +49,3 @@ window.addEventListener("click", (e) => {
   const popup = e.target.closest(".popup");
   closePopup(popup);
 });
-
-export { newItemPopup, editPopup };
