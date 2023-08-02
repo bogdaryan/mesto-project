@@ -1,4 +1,4 @@
-<h1 align="center"> <a href='https://bogdaryan.github.io/mesto-project/' target='_blank'>Mesto (JavaScript)</a> </h1>
+<h1 align="center"> Mesto (JavaScript) </h1>
 <h2 align="center">Проектная работа #3 (Спринт №1)</h2>
 
 <h3>Технологии</h3>
