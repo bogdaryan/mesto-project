@@ -21,12 +21,13 @@ import {
 const avatarImage = document.querySelector(".profile__image");
 const editAvatarForm = document.forms["edit-avatar"];
 const avatarLink = editAvatarForm.elements["avatar-input"];
-const user = await getUser().then((user) => {
-  avatarImage.src = user.avatar;
-});
+
+getUser()
+  .then((user) => (avatarImage.src = user.avatar))
+  .catch((e) => console.error(e));
 
 Promise.all([getUser(), getCards()]).then((res) => {
-  let [userData, cards] = res;
+  const [userData, cards] = res;
 
   generateCards(cards);
   setCurrentUserInfo(userData);

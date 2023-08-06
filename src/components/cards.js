@@ -1,13 +1,6 @@
-import { closePopup, handleSubmit, openPopup } from "./utils.js";
+import { handleSubmit, openPopup } from "./utils.js";
 import { newItemPopup } from "./modal.js";
-import {
-  deleteCard,
-  deleteLike,
-  getCards,
-  getUser,
-  postCard,
-  setLike,
-} from "./api.js";
+import { deleteCard, deleteLike, getUser, postCard, setLike } from "./api.js";
 
 const cardTemplate = document.querySelector("#template-card").content;
 const fullSizePupup = document.querySelector(".popup-type_full-size");
@@ -16,8 +9,6 @@ const titleBigImage = fullSizePupup.querySelector(
   ".popup-type_full-size__title"
 );
 const cardListElement = document.querySelector(".cards__list");
-
-const usersCards = await getCards().then((res) => res);
 const user = await getUser().then((res) => res);
 
 function initCard(itemCard) {

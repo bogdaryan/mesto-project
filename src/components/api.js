@@ -6,12 +6,6 @@ const api = {
   },
 };
 
-function getData(res) {
-  if (!res.ok) Promise.reject(`Ошибка ${res}`);
-
-  return res.json();
-}
-
 function checkResponse(res) {
   if (!res.ok) Promise.reject(`Ошибка ${res}`);
 

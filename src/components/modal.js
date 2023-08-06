@@ -26,21 +26,8 @@ editPopupButton.addEventListener("click", () => {
   openPopup(editPopup);
 });
 
-newItemPopupButton.addEventListener("click", () => {
-  // const btn = newItemPopup.querySelector(".form__submit");
-  // btn.classList.add("form__submit_disabled");
-  // btn.disabled = true;
-
-  openPopup(newItemPopup);
-});
-
-imageEditBtn.addEventListener("click", () => {
-  // const btn = popupEditAvatar.querySelector(".form__submit");
-  // btn.classList.add("form__submit_disabled");
-  // btn.disabled = true;
-
-  openPopup(popupEditAvatar);
-});
+newItemPopupButton.addEventListener("click", () => openPopup(newItemPopup));
+imageEditBtn.addEventListener("click", () => openPopup(popupEditAvatar));
 
 // Close popup //
 window.addEventListener("click", (e) => {
