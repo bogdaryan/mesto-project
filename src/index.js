@@ -8,13 +8,29 @@ import {
   formUserName,
   formUserDescription,
   editForm,
+  handleSubmit,
 } from "./components/utils.js";
 import { enableValidation } from "./components/validate.js";
-import { getUser, setUserInfo, setUserAvatar } from "./components/api.js";
+import {
+  getUser,
+  setUserInfo,
+  setUserAvatar,
+  getCards,
+} from "./components/api.js";
 
-generateCards();
+const avatarImage = document.querySelector(".profile__image");
+const editAvatarForm = document.forms["edit-avatar"];
+const avatarLink = editAvatarForm.elements["avatar-input"];
+const user = await getUser().then((user) => {
+  avatarImage.src = user.avatar;
+});
 
-const user = await getUser().then((res) => res);
+Promise.all([getUser(), getCards()]).then((res) => {
+  let [userData, cards] = res;
+
+  generateCards(cards);
+  setCurrentUserInfo(userData);
+});
 
 // edit profile //
 function setCurrentUserInfo(user) {
@@ -22,40 +38,27 @@ function setCurrentUserInfo(user) {
   userDescription.textContent = user.about;
 }
 
-setCurrentUserInfo(user);
-
-editForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  setUserInfo(formUserName.value, formUserDescription.value).then((user) => {
-    setCurrentUserInfo(user);
-  });
-
-  editForm.reset();
-  closePopup(editPopup);
-});
-
-const avatarImage = document.querySelector(".profile__image");
-avatarImage.src = user.avatar;
-
-function handleEditAvatar() {
-  const editAvatarForm = document.forms["edit-avatar"];
-  const avatarLink = editAvatarForm.elements["avatar-input"];
-  const formSubmit = editAvatarForm.querySelector(".form__submit");
-
-  editAvatarForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    setUserAvatar({ avatar: avatarLink.value }).then((user) => {
-      avatarImage.src = user.avatar;
-    });
-
-    editAvatarForm.reset();
-
-    closePopup(popupEditAvatar);
-  });
+function handleProfileFormSubmit(e) {
+  function makeRequest() {
+    return setUserInfo(formUserName.value, formUserDescription.value).then(
+      (userData) => {
+        profileName.textContent = userData.name;
+        userDescription.textContent = userData.about;
+      }
+    );
+  }
+  handleSubmit(makeRequest, e);
 }
 
-handleEditAvatar();
+function handleEditAvatarFormSubmit(e) {
+  function makeRequest() {
+    return setUserAvatar({ avatar: avatarLink.value }).then((user) => {
+      avatarImage.src = user.avatar;
+    });
+  }
+
+  handleSubmit(makeRequest, e);
+}
 
 enableValidation({
   formSelector: "form",
@@ -65,3 +68,6 @@ enableValidation({
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_visible",
 });
+
+editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
+editForm.addEventListener("submit", handleProfileFormSubmit);

@@ -12,61 +12,71 @@ function getData(res) {
   return res.json();
 }
 
+function checkResponse(res) {
+  if (!res.ok) Promise.reject(`Ошибка ${res}`);
+
+  return res.json();
+}
+
+const request = (url, options) => {
+  return fetch(api.url + url, options).then(checkResponse);
+};
+
 export function getUser() {
-  return fetch(`${api.url}/users/me`, { headers: api.headers }).then(getData);
+  return request("/users/me", { headers: api.headers });
 }
 
 export function setUserInfo(name, about) {
-  return fetch(`${api.url}/users/me`, {
+  return request("/users/me", {
     method: "PATCH",
     headers: api.headers,
     body: JSON.stringify({
       name: name,
       about: about,
     }),
-  }).then(getData);
+  });
 }
 
 export function setUserAvatar(link) {
-  return fetch(`${api.url}/users/me/avatar`, {
+  return request("/users/me/avatar", {
     method: "PATCH",
     headers: api.headers,
     body: JSON.stringify(link),
-  }).then(getData);
+  });
 }
 
 export function getCards() {
-  return fetch(`${api.url}/cards`, { headers: api.headers }).then(getData);
+  return request("/cards", { headers: api.headers });
 }
 
 export function postCard(name, link) {
-  return fetch(`${api.url}/cards`, {
+  return request("/cards", {
     method: "POST",
     headers: api.headers,
     body: JSON.stringify({
       name: name,
       link: link,
     }),
-  }).then(getData);
+  });
 }
 
 export function deleteCard(id) {
-  return fetch(`${api.url}/cards/${id}`, {
+  return request(`/cards/${id}`, {
     method: "DELETE",
     headers: api.headers,
-  }).then(getData);
+  });
 }
 
 export function setLike(id) {
-  return fetch(`${api.url}/cards/likes/${id}`, {
+  return request(`/cards/likes/${id}`, {
     method: "PUT",
     headers: api.headers,
-  }).then(getData);
+  });
 }
 
 export function deleteLike(id) {
-  return fetch(`${api.url}/cards/likes/${id}`, {
+  return request(`/cards/likes/${id}`, {
     method: "DELETE",
     headers: api.headers,
-  }).then(getData);
+  });
 }

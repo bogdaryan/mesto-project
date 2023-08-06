@@ -1,4 +1,4 @@
-import { closePopup, openPopup } from "./utils.js";
+import { closePopup, handleSubmit, openPopup } from "./utils.js";
 import { newItemPopup } from "./modal.js";
 import {
   deleteCard,
@@ -17,6 +17,7 @@ const titleBigImage = fullSizePupup.querySelector(
 );
 const cardListElement = document.querySelector(".cards__list");
 
+const usersCards = await getCards().then((res) => res);
 const user = await getUser().then((res) => res);
 
 function initCard(itemCard) {
@@ -36,19 +37,22 @@ function initCard(itemCard) {
 
   // Like Event
   btnLike.addEventListener("click", (e) => {
-    // const isLikeExist = itemCard.likes.some((like) => like._id === user._id);
     const isLikeExist = btnLike.className.includes("card__btn-like_active");
 
     if (!isLikeExist) {
-      btnLike.classList.add("card__btn-like_active");
-      setLike(itemCard._id).then((card) => {
-        numberLikes.textContent = card.likes.length;
-      });
+      setLike(itemCard._id)
+        .then((card) => {
+          btnLike.classList.add("card__btn-like_active");
+          numberLikes.textContent = card.likes.length;
+        })
+        .catch((e) => console.error(e));
     } else {
-      btnLike.classList.remove("card__btn-like_active");
-      deleteLike(itemCard._id).then((card) => {
-        numberLikes.textContent = card.likes.length;
-      });
+      deleteLike(itemCard._id)
+        .then((card) => {
+          btnLike.classList.remove("card__btn-like_active");
+          numberLikes.textContent = card.likes.length;
+        })
+        .catch((e) => console.error(e));
     }
   });
 
@@ -65,8 +69,11 @@ function initCard(itemCard) {
   if (!isUserCard) btnDelete.remove();
 
   btnDelete.addEventListener("click", () => {
-    deleteCard(itemCard._id);
-    card.remove();
+    deleteCard(itemCard._id)
+      .then(() => {
+        card.remove();
+      })
+      .catch((e) => console.error(e));
   });
 
   // Open Image
@@ -81,12 +88,10 @@ function initCard(itemCard) {
   return card;
 }
 
-export async function generateCards() {
-  const usersCards = await getCards().then((res) => res);
-
+export function generateCards(cards) {
   cardListElement.innerHTML = " ";
 
-  for (const card of usersCards) {
+  for (const card of cards) {
     cardListElement.prepend(initCard(card));
   }
 }
@@ -95,14 +100,16 @@ const formNewCard = newItemPopup.querySelector(".form");
 const nameImageInput = document.querySelector("#title-input");
 const linkImageInput = document.querySelector("#image-link-input");
 
-formNewCard.addEventListener("submit", async (e) => {
-  e.preventDefault();
+const pushCardToList = (card) => cardListElement.append(initCard(card));
 
-  postCard(nameImageInput.value, linkImageInput.value).finally(() => {
-    generateCards();
-  });
+function handleAddCardFormSubmit(e) {
+  function makeRequest() {
+    return postCard(nameImageInput.value, linkImageInput.value).then((card) =>
+      pushCardToList(card)
+    );
+  }
 
-  formNewCard.reset();
+  handleSubmit(makeRequest, e);
+}
 
-  closePopup(newItemPopup);
-});
+formNewCard.addEventListener("submit", handleAddCardFormSubmit);

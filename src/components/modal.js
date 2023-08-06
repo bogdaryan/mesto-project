@@ -27,14 +27,18 @@ editPopupButton.addEventListener("click", () => {
 });
 
 newItemPopupButton.addEventListener("click", () => {
-  const btn = newItemPopup.querySelector(".form__submit");
-  btn.classList.add("form__submit_disabled");
-  btn.disabled = true;
+  // const btn = newItemPopup.querySelector(".form__submit");
+  // btn.classList.add("form__submit_disabled");
+  // btn.disabled = true;
 
   openPopup(newItemPopup);
 });
 
 imageEditBtn.addEventListener("click", () => {
+  // const btn = popupEditAvatar.querySelector(".form__submit");
+  // btn.classList.add("form__submit_disabled");
+  // btn.disabled = true;
+
   openPopup(popupEditAvatar);
 });
 
