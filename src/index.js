@@ -26,12 +26,14 @@ getUser()
   .then((user) => (avatarImage.src = user.avatar))
   .catch((e) => console.error(e));
 
-Promise.all([getUser(), getCards()]).then((res) => {
-  const [userData, cards] = res;
+Promise.all([getUser(), getCards()])
+  .then((res) => {
+    const [userData, cards] = res;
 
-  generateCards(cards);
-  setCurrentUserInfo(userData);
-});
+    generateCards(cards);
+    setCurrentUserInfo(userData);
+  })
+  .catch((e) => console.error(e));
 
 // edit profile //
 function setCurrentUserInfo(user) {

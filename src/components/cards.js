@@ -9,7 +9,9 @@ const titleBigImage = fullSizePupup.querySelector(
   ".popup-type_full-size__title"
 );
 const cardListElement = document.querySelector(".cards__list");
-const user = await getUser().then((res) => res);
+const user = await getUser()
+  .then((res) => res)
+  .catch((e) => console.error(e));
 
 function initCard(itemCard) {
   const card = cardTemplate.querySelector(".card").cloneNode(true);
@@ -61,9 +63,7 @@ function initCard(itemCard) {
 
   btnDelete.addEventListener("click", () => {
     deleteCard(itemCard._id)
-      .then(() => {
-        card.remove();
-      })
+      .then(() => card.remove())
       .catch((e) => console.error(e));
   });
 
