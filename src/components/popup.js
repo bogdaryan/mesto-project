@@ -1,33 +1,16 @@
-import {
-  openPopup,
-  closePopup,
-  profileName,
-  userDescription,
-  formUserName,
-  formUserDescription,
-} from "./utils.js";
+export class Popup {
+  constructor(popupElement) {
+    this.popupElement = popupElement;
+  }
 
-const newItemPopupButton = document.querySelector(".profile__add-btn");
-const editPopupButton = document.querySelector(".profile__edit-btn");
+  open() {
+    this.popupElement.classList.add("popup_opened");
+  }
 
-export const newItemPopup = document.querySelector(".popup_type_add-photo");
-export const editPopup = document.querySelector(".popup_type_edit-profile");
-export const popupEditAvatar = document.querySelector(
-  ".popup_type_edit-avatar"
-);
-
-const imageEditBtn = document.querySelector(".profile__image-edit");
-
-// Open popup //
-editPopupButton.addEventListener("click", () => {
-  formUserName.value = profileName.textContent;
-  formUserDescription.value = userDescription.textContent;
-
-  openPopup(editPopup);
-});
-
-newItemPopupButton.addEventListener("click", () => openPopup(newItemPopup));
-imageEditBtn.addEventListener("click", () => openPopup(popupEditAvatar));
+  close() {
+    this.popupElement.classList.remove("popup_opened");
+  }
+}
 
 // Close popup //
 window.addEventListener("click", (e) => {
@@ -38,5 +21,6 @@ window.addEventListener("click", (e) => {
   if (!isPopUp) return;
 
   const popup = e.target.closest(".popup");
-  closePopup(popup);
+
+  new Popup(popup).close();
 });

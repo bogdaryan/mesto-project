@@ -16,13 +16,13 @@ class UserInfo {
     };
   }
 
-  setUserData({ username, description }) {
-    this._username.textContent = username;
-    this._userDescription.textContent = description;
+  setUserData({ name, about }) {
+    this._username.textContent = name;
+    this._userDescription.textContent = about;
   }
 
-  setUserAvatar(avatarLink) {
-    this._avatarLink.src = avatarLink;
+  setUserAvatar({ avatar }) {
+    this._avatarLink.src = avatar;
   }
 }
 

@@ -1,6 +1,8 @@
+import { apiConfig } from "../utils/constants";
+
 class Api {
-  constructor({ baseUrl, headers }) {
-    this.baseUrl = baseUrl;
+  constructor({ url, headers }) {
+    this.baseUrl = url;
     this.headers = headers;
   }
 
@@ -13,7 +15,9 @@ class Api {
   }
 
   _request(path, options) {
-    return fetch(`${this.baseUrl}${path}`, options).then(this._checkResponse.bind(this));
+    return fetch(`${this.baseUrl}${path}`, options).then(
+      this._checkResponse.bind(this)
+    );
   }
 
   userInfo() {
@@ -75,4 +79,6 @@ class Api {
   }
 }
 
-export { Api };
+const api = new Api(apiConfig);
+
+export { api };
