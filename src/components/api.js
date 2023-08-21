@@ -1,76 +1,78 @@
-const api = {
-  url: "https://nomoreparties.co/v1/plus-cohort-27",
-  headers: {
-    authorization: "47ce978d-8dd3-4a82-9cc9-4dd45f83b925",
-    "Content-Type": "application/json",
-  },
-};
+class Api {
+  constructor({ baseUrl, headers }) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
+  }
 
-function checkResponse(res) {
-  if (!res.ok) Promise.reject(`Ошибка ${res}`);
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return Promise.reject(`код ошибки: ${res.status}`);
+    }
+  }
 
-  return res.json();
+  _request(path, options) {
+    return fetch(`${this.baseUrl}${path}`, options).then(this._checkResponse.bind(this));
+  }
+
+  userInfo() {
+    return this._request("/users/me", { headers: this.headers });
+  }
+
+  getServerCards() {
+    return this._request("/cards", { headers: this.headers });
+  }
+
+  profileDataDefault(profileData) {
+    return this._request("/users/me", {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        name: profileData.username,
+        about: profileData.description,
+      }),
+    });
+  }
+
+  avatarPictureDefault(avatarLink) {
+    return this._request("/users/me/avatar", {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatarLink.avatar,
+      }),
+    });
+  }
+
+  postCard(name, link) {
+    return this._request("/cards", {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify({ name, link }),
+    });
+  }
+
+  likeCard(cardId) {
+    return this._request(`/cards/likes/${cardId}`, {
+      method: "PUT",
+      headers: this.headers,
+    });
+  }
+
+  dislikeCard(cardId) {
+    return this._request(`/cards/likes/${cardId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+  }
+
+  deleteCard(cardId, cardElement) {
+    return this._request(`/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+  }
 }
 
-const request = (url, options) => {
-  return fetch(api.url + url, options).then(checkResponse);
-};
-
-export function getUser() {
-  return request("/users/me", { headers: api.headers });
-}
-
-export function setUserInfo(name, about) {
-  return request("/users/me", {
-    method: "PATCH",
-    headers: api.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about,
-    }),
-  });
-}
-
-export function setUserAvatar(link) {
-  return request("/users/me/avatar", {
-    method: "PATCH",
-    headers: api.headers,
-    body: JSON.stringify(link),
-  });
-}
-
-export function getCards() {
-  return request("/cards", { headers: api.headers });
-}
-
-export function postCard(name, link) {
-  return request("/cards", {
-    method: "POST",
-    headers: api.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
-    }),
-  });
-}
-
-export function deleteCard(id) {
-  return request(`/cards/${id}`, {
-    method: "DELETE",
-    headers: api.headers,
-  });
-}
-
-export function setLike(id) {
-  return request(`/cards/likes/${id}`, {
-    method: "PUT",
-    headers: api.headers,
-  });
-}
-
-export function deleteLike(id) {
-  return request(`/cards/likes/${id}`, {
-    method: "DELETE",
-    headers: api.headers,
-  });
-}
+export { Api };

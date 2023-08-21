@@ -1,56 +1,37 @@
-export const profileName = document.querySelector(".profile__name");
-export const userDescription = document.querySelector(".profile__description");
+export const validationSelectors = {
+  formSelector: ".form",
+  inputSelector: ".form__input",
+  submitButtonSelector: ".form__submit",
+  inactiveButtonClass: ".form__submit_disabled",
+  inputErrorClass: ".popup__text_type-error",
+  errorClass: ".popup__input-error_visible",
+};
 
-export const editForm = document.forms["edit-form"];
-export const formUserName = editForm.elements["user-name"];
-export const formUserDescription = editForm.elements["user-description"];
+const profileEditingButton = document.querySelector(".profile__edit-btn");
+const addCardButton = document.querySelector(".profile__add-btn");
+const popupProfile = document.querySelector("#popup-edit-profile");
+const profileForm = popupProfile.querySelector(
+  "#popup-edit-profile-form"
+);
+const popupAddCard = document.querySelector("#popup-add-card");
+const formAddCard = popupAddCard.querySelector("#popup-add-card-form");
+const profileFormNameInput = popupProfile.querySelector("#popup-edit-profile-form-name");
+const profileFormAboutInput = popupProfile.querySelector("#popup-edit-profile-form-description");
+const popupAvatar = document.querySelector("#popup-edit-avatar");
+const popupAvatarEditForm = popupAvatar.querySelector(
+  "#popup-edit-avatar-form"
+);
+const iconAvatarEdit = document.querySelector(".profile__image-container");
 
-function closeByEscape(e) {
-  if (e.key === "Escape") {
-    const openedPopup = document.querySelector(".popup_opened");
-    closePopup(openedPopup);
-  }
-}
-
-export function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keydown", closeByEscape);
-}
-
-export function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", closeByEscape);
-}
-
-function renderLoading(
-  isLoading,
-  button,
-  buttonText = "Сохранить",
-  loadingText = "Сохранение..."
-) {
-  if (isLoading) {
-    button.textContent = loadingText;
-  } else {
-    button.textContent = buttonText;
-  }
-}
-
-export function handleSubmit(request, e, loadingText = "Сохранение...") {
-  e.preventDefault();
-
-  const submitButton = e.submitter;
-  const initialText = submitButton.textContent;
-  renderLoading(true, submitButton, initialText, loadingText);
-
-  request()
-    .then(() => {
-      closePopup(document.querySelector(".popup_opened"));
-
-      submitButton.classList.add("form__submit_disabled");
-      submitButton.disabled = true;
-
-      e.target.reset();
-    })
-    .catch((err) => console.error(`Ошибка: ${err}`))
-    .finally(() => renderLoading(false, submitButton, initialText));
-}
+export {
+  profileEditingButton as profileEditingIcon,
+  addCardButton as iconAddCard,
+  popupProfile as popupProfile,
+  popupAddCard as popupCards,
+  profileForm as formProfile,
+  profileFormNameInput as nameInput,
+  profileFormAboutInput as descriptionInput,
+  formAddCard as formCards,
+  popupAvatarEditForm,
+  iconAvatarEdit,
+};
