@@ -1,6 +1,6 @@
-import { Popup } from "./popup.js";
+import { Popup } from "./Popup.js";
 
-class PopupWithForm extends Popup {
+export default class PopupWithForm extends Popup {
   constructor(popupElement, { onFormSubmit }) {
     super(popupElement);
     this._onFormSubmit = onFormSubmit;
@@ -27,19 +27,4 @@ class PopupWithForm extends Popup {
       this._onFormSubmit(this._collectInputValues());
     });
   }
-
-  displaySavingText() {
-    this._submitButton.textContent = "Сохранение...";
-  }
-
-  restoreSubmitButtonText() {
-    this._submitButton.textContent = this._submitButtonText;
-  }
-
-  closeAndReset() {
-    super.close();
-    this._popupForm.reset();
-  }
 }
-
-export { PopupWithForm };

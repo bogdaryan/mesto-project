@@ -1,4 +1,4 @@
-export const validationSelectors = {
+export const validationConfig = {
   formSelector: ".form",
   inputSelector: ".form__input",
   submitButtonSelector: ".form__submit",
@@ -21,17 +21,27 @@ export const profileSelectors = {
   userAvatarSelector: ".profile__image",
 };
 
+// selectors //
 export const cardListSelector = ".cards__list";
 
+// buttons //
 export const profileEditBtn = document.querySelector(".profile__edit-btn");
 export const addCardBtn = document.querySelector(".profile__add-btn");
 export const editAvatarBtn = document.querySelector(".profile__image-edit");
 
-export const popupEditProfile = document.querySelector("#popup-edit-profile");
-export const popupAddCard = document.querySelector("#popup-add-card");
-export const popupAvatar = document.querySelector("#popup-edit-avatar");
+// popup //
+export const popupEditProfile = document.querySelector(
+  ".popup_type_edit-profile"
+);
+export const popupAddCard = document.querySelector(".popup_type_add-photo");
+export const popupAvatar = document.querySelector(".popup_type_edit-avatar");
+export const popupFullImage = document.querySelector(".popup-type_full-size");
 
+// elements //
 export const profileName = document.querySelector(".profile__name");
 export const userDescription = document.querySelector(".profile__description");
 
 export const editForm = document.forms["edit-form"];
+export const editAvatarForm = document.forms["edit-avatar"];
+
+export const avatarLink = editAvatarForm.elements["avatar-input"];

@@ -7,11 +7,7 @@ class Api {
   }
 
   _checkResponse(res) {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`код ошибки: ${res.status}`);
-    }
+    return res.ok ? res.json() : Promise.reject(`код ошибки: ${res.status}`);
   }
 
   _request(path, options) {
@@ -20,32 +16,30 @@ class Api {
     );
   }
 
-  userInfo() {
+  getUser() {
     return this._request("/users/me", { headers: this.headers });
   }
 
-  getServerCards() {
+  getCards() {
     return this._request("/cards", { headers: this.headers });
   }
 
-  profileDataDefault(profileData) {
+  setUserInfo(name, about) {
     return this._request("/users/me", {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
-        name: profileData.username,
-        about: profileData.description,
+        name: name,
+        about: about,
       }),
     });
   }
 
-  avatarPictureDefault(avatarLink) {
+  setUserAvatar(link) {
     return this._request("/users/me/avatar", {
       method: "PATCH",
-      headers: this.headers,
-      body: JSON.stringify({
-        avatar: avatarLink.avatar,
-      }),
+      headers: api.headers,
+      body: JSON.stringify(link),
     });
   }
 
@@ -57,22 +51,22 @@ class Api {
     });
   }
 
-  likeCard(cardId) {
-    return this._request(`/cards/likes/${cardId}`, {
+  setLike(id) {
+    return this._request(`/cards/likes/${id}`, {
       method: "PUT",
       headers: this.headers,
     });
   }
 
-  dislikeCard(cardId) {
-    return this._request(`/cards/likes/${cardId}`, {
+  dislikeCard(id) {
+    return this._request(`/cards/likes/${id}`, {
       method: "DELETE",
       headers: this.headers,
     });
   }
 
-  deleteCard(cardId, cardElement) {
-    return this._request(`/cards/${cardId}`, {
+  deleteCard(id) {
+    return this._request(`/cards/${id}`, {
       method: "DELETE",
       headers: this.headers,
     });

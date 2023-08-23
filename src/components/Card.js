@@ -1,5 +1,3 @@
-// import { api } from "./api.js";
-
 // const fullSizePupup = document.querySelector(".popup-type_full-size");
 // const bigImage = fullSizePupup.querySelector(".popup-type_full-size__image");
 // const titleBigImage = fullSizePupup.querySelector(
@@ -9,7 +7,7 @@
 //   .then((res) => res)
 //   .catch((e) => console.error(e));
 
-export class Card {
+export default class Card {
   constructor(itemCard) {
     this.itemCard = itemCard;
     this.arrLikes = this.itemCard.likes;
@@ -92,14 +90,6 @@ export class Card {
   //   });
   // }
 }
-
-// export function generateCards(cards) {
-//   cardListElement.innerHTML = " ";
-
-//   for (const card of cards) {
-//     cardListElement.prepend(new Card(card).generate());
-//   }
-// }
 
 // const formNewCard = newItemPopup.querySelector(".form");
 // const nameImageInput = document.querySelector("#title-input");

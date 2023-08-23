@@ -11,21 +11,25 @@ import {
   profileName,
   userDescription,
   editForm,
+  avatarLink,
+  editAvatarForm,
+  validationConfig,
 } from "./utils/constants";
-import { UserInfo } from "./components/UserInfo";
+
+import { handleSubmit } from "./utils/utils";
+
+import UserInfo from "./components/UserInfo";
 import { api } from "./components/Api";
-import { Card } from "./components/Card";
-import { Section } from "./components/Section";
-import { Popup } from "./components/Popup";
+import Card from "./components/Card";
+import Section from "./components/Section";
+import Popup from "./components/Popup";
+import FormValidator from "./components/ValidationForm";
 
-// import { FormValidator } from "./components/validate.js";
-
-// const editAvatarForm = document.forms["edit-avatar"];
-// const avatarLink = editAvatarForm.elements["avatar-input"];
+// new FormValidator(validationConfig);
 
 const user = new UserInfo(profileSelectors);
 
-Promise.all([api.userInfo(), api.getServerCards()])
+Promise.all([api.getUser(), api.getCards()])
   .then((res) => {
     const [userData, cards] = res;
 
@@ -49,12 +53,14 @@ Promise.all([api.userInfo(), api.getServerCards()])
   .catch((e) => console.error(e));
 
 // Popup //
-const formUserName = editForm.elements["user-name"];
-const formUserDescription = editForm.elements["user-description"];
 
-addCardBtn.addEventListener("click", () => {
-  new Popup(popupAddCard).open();
-});
+const {
+  ["user-name"]: formUserName,
+  ["user-description"]: formUserDescription,
+} = editForm.elements;
+
+addCardBtn.addEventListener("click", () => new Popup(popupAddCard).open());
+editAvatarBtn.addEventListener("click", () => new Popup(popupAvatar).open());
 
 profileEditBtn.addEventListener("click", () => {
   formUserName.value = profileName.textContent;
@@ -63,40 +69,25 @@ profileEditBtn.addEventListener("click", () => {
   new Popup(popupEditProfile).open();
 });
 
-editAvatarBtn.addEventListener("click", () => {
-  new Popup(popupAvatar).open();
-});
+function handleProfileFormSubmit(e) {
+  function makeRequest() {
+    return api
+      .setUserInfo(formUserName.value, formUserDescription.value)
+      .then((userData) => user.setUserData(userData));
+  }
 
-// function handleProfileFormSubmit(e) {
-//   function makeRequest() {
-//     return setUserInfo(formUserName.value, formUserDescription.value).then(
-//       (userData) => {
-//         profileName.textContent = userData.name;
-//         userDescription.textContent = userData.about;
-//       }
-//     );
-//   }
-//   handleSubmit(makeRequest, e);
-// }
+  handleSubmit(makeRequest, e);
+}
 
-// function handleEditAvatarFormSubmit(e) {
-//   function makeRequest() {
-//     return setUserAvatar({ avatar: avatarLink.value }).then((user) => {
-//       avatarImage.src = user.avatar;
-//     });
-//   }
+function handleEditAvatarFormSubmit(e) {
+  function makeRequest() {
+    return api.setUserAvatar({ avatar: avatarLink.value }).then((userData) => {
+      user.setUserAvatar(userData);
+    });
+  }
 
-//   handleSubmit(makeRequest, e);
-// }
+  handleSubmit(makeRequest, e);
+}
 
-// enableValidation({
-//   formSelector: "form",
-//   inputSelector: ".form__input",
-//   submitButtonSelector: ".form__submit",
-//   inactiveButtonClass: "form__submit_disabled",
-//   inputErrorClass: "form__input_type_error",
-//   errorClass: "form__input-error_visible",
-// });
-
-// editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
-// editForm.addEventListener("submit", handleProfileFormSubmit);
+editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
+editForm.addEventListener("submit", handleProfileFormSubmit);

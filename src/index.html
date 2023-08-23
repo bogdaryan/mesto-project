@@ -42,7 +42,7 @@
       <p class="footer__text">© 2023 Mesto Russia</p>
     </footer>
 
-    <div id="popup-edit-avatar" class="popup popup_type_edit-avatar">
+    <div class="popup popup_type_edit-avatar">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -50,19 +50,13 @@
           aria-label="Закрыть"
         ></button>
 
-        <form
-          id="popup-edit-avatar-form"
-          name="edit-avatar"
-          class="form"
-          novalidate
-        >
+        <form name="edit-avatar" class="form" novalidate>
           <h3 class="form__title">Обновить аватар</h3>
 
           <fieldset class="form__input-container">
             <label class="form__field">
               <input
                 class="form__input"
-                id="avatar-input"
                 type="url"
                 placeholder="Ссылка на фото"
                 name="avatar-input"
@@ -76,7 +70,7 @@
       </div>
     </div>
 
-    <div id="popup-edit-profile" class="popup popup_type_edit-profile">
+    <div class="popup popup_type_edit-profile">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -84,19 +78,13 @@
           aria-label="Закрыть"
         ></button>
 
-        <form
-          id="popup-edit-profile-form"
-          name="edit-form"
-          class="form"
-          novalidate
-        >
+        <form name="edit-form" class="form" novalidate>
           <h3 class="form__title">Редактировать профиль</h3>
 
           <fieldset class="form__input-container">
             <label class="form__field">
               <input
                 class="form__input"
-                id="popup-edit-profile-form-name"
                 type="text"
                 name="user-name"
                 minlength="2"
@@ -110,7 +98,6 @@
             <label class="form__field">
               <input
                 class="form__input"
-                id="popup-edit-profile-description"
                 type="text"
                 name="user-description"
                 minlength="2"
@@ -127,7 +114,7 @@
       </div>
     </div>
 
-    <div id="popup-add-card" class="popup popup_type_add-photo">
+    <div class="popup popup_type_add-photo">
       <div class="popup__inner">
         <button
           class="popup__btn-close"
@@ -135,7 +122,7 @@
           aria-label="Закрыть"
         ></button>
 
-        <form id="popup-add-card-form" class="form" novalidate>
+        <form class="form" novalidate>
           <h3 class="form__title">Новое место</h3>
 
           <fieldset class="form__input-container">
@@ -155,7 +142,6 @@
             <label class="form__field">
               <input
                 class="form__input form__input_color-light"
-                id="image-link-input"
                 type="url"
                 placeholder="Ссылка на картинку"
                 name="image-src"
@@ -170,7 +156,7 @@
       </div>
     </div>
 
-    <div id="popup-zoom-image" class="popup popup-type_full-size">
+    <div class="popup popup-type_full-size">
       <div
         id="popup-zoom-image-form"
         class="popup__inner popup-type_full-size__inner"

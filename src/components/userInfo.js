@@ -1,4 +1,4 @@
-class UserInfo {
+export default class UserInfo {
   constructor({
     usernameSelector,
     userDescriptionSelector,
@@ -25,5 +25,3 @@ class UserInfo {
     this._avatarLink.src = avatar;
   }
 }
-
-export { UserInfo };
