@@ -1,10 +1,9 @@
 export const validationConfig = {
-  formSelector: ".form",
   inputSelector: ".form__input",
   submitButtonSelector: ".form__submit",
-  inactiveButtonClass: ".form__submit_disabled",
-  inputErrorClass: ".popup__text_type-error",
-  errorClass: ".popup__input-error_visible",
+  inactiveButtonClass: "form__submit_disabled",
+  inputErrorClass: "form__text_type-error",
+  errorClass: "form__input-error_visible",
 };
 
 export const apiConfig = {
@@ -43,5 +42,6 @@ export const userDescription = document.querySelector(".profile__description");
 
 export const editForm = document.forms["edit-form"];
 export const editAvatarForm = document.forms["edit-avatar"];
+export const formNewCard = document.forms["add-card-form"];
 
 export const avatarLink = editAvatarForm.elements["avatar-input"];

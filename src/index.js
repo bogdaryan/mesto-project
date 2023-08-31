@@ -13,21 +13,22 @@ import {
   editForm,
   avatarLink,
   editAvatarForm,
-  validationConfig,
+  formNewCard,
+  popupFullImage,
 } from "./utils/constants";
-
-import { handleSubmit } from "./utils/utils";
 
 import UserInfo from "./components/UserInfo";
 import { api } from "./components/Api";
 import Card from "./components/Card";
 import Section from "./components/Section";
-import Popup from "./components/Popup";
-import FormValidator from "./components/ValidationForm";
-
-// new FormValidator(validationConfig);
+import PopupWithForm from "./components/PopupWithForm";
+import PopupWithImage from "./components/PopupWithImage";
 
 const user = new UserInfo(profileSelectors);
+const popupEditProfileInfo = new PopupWithForm(popupEditProfile);
+const popupUserAvatar = new PopupWithForm(popupAvatar);
+const popupNewCard = new PopupWithForm(popupAddCard);
+const popupWithImage = new PopupWithImage(popupFullImage);
 
 Promise.all([api.getUser(), api.getCards()])
   .then((res) => {
@@ -37,7 +38,7 @@ Promise.all([api.getUser(), api.getCards()])
       {
         data: cards,
         renderer: (item) => {
-          const card = new Card(item);
+          const card = new Card(item, popupWithImage);
           const cardElement = card.generate();
           listCards.addItem(cardElement);
         },
@@ -59,35 +60,79 @@ const {
   ["user-description"]: formUserDescription,
 } = editForm.elements;
 
-addCardBtn.addEventListener("click", () => new Popup(popupAddCard).open());
-editAvatarBtn.addEventListener("click", () => new Popup(popupAvatar).open());
+addCardBtn.addEventListener("click", () => popupNewCard.open());
+editAvatarBtn.addEventListener("click", () => popupUserAvatar.open());
 
 profileEditBtn.addEventListener("click", () => {
   formUserName.value = profileName.textContent;
   formUserDescription.value = userDescription.textContent;
 
-  new Popup(popupEditProfile).open();
+  popupEditProfileInfo.open();
 });
 
-function handleProfileFormSubmit(e) {
+window.addEventListener("click", (e) => {
+  const isPopUp = e.target.className.includes("popup");
+  const isBtnClose = e.target.className.includes("popup__btn-close");
+
+  if (e.target.closest(".popup__inner") && !isBtnClose) return;
+  if (!isPopUp) return;
+
+  const popup = document.querySelector(".popup_opened");
+
+  new PopupWithForm(popup).close();
+});
+
+// handle form //
+
+function handleProfileFormSubmit() {
   function makeRequest() {
     return api
       .setUserInfo(formUserName.value, formUserDescription.value)
       .then((userData) => user.setUserData(userData));
   }
 
-  handleSubmit(makeRequest, e);
+  return makeRequest();
 }
 
-function handleEditAvatarFormSubmit(e) {
+function handleEditAvatarFormSubmit() {
   function makeRequest() {
     return api.setUserAvatar({ avatar: avatarLink.value }).then((userData) => {
       user.setUserAvatar(userData);
     });
   }
-
-  handleSubmit(makeRequest, e);
+  return makeRequest();
 }
 
-editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
-editForm.addEventListener("submit", handleProfileFormSubmit);
+const {
+  ["title-input"]: nameImageInput,
+  ["image-link-input"]: linkImageInput,
+} = formNewCard.elements;
+
+const cardList = document.querySelector(cardListSelector);
+
+const pushCardToList = (card) => {
+  const cardElement = new Card(card).generate();
+  cardList.append(cardElement);
+};
+
+function handleAddCardFormSubmit() {
+  function makeRequest() {
+    return api
+      .postCard(nameImageInput.value, linkImageInput.value)
+      .then((card) => pushCardToList(card));
+  }
+
+  return makeRequest();
+}
+
+editAvatarForm.addEventListener("submit", (e) => {
+  popupUserAvatar.handleSubmit(handleEditAvatarFormSubmit, e);
+});
+
+editForm.addEventListener("submit", (e) => {
+  popupEditProfileInfo.handleSubmit(handleProfileFormSubmit, e);
+});
+
+formNewCard.addEventListener("submit", (e) => {
+  popupNewCard.handleSubmit(handleAddCardFormSubmit, e);
+});
