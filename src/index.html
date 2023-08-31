@@ -57,6 +57,7 @@
             <label class="form__field">
               <input
                 class="form__input"
+                id="avatar-input"
                 type="url"
                 placeholder="Ссылка на фото"
                 name="avatar-input"
@@ -85,6 +86,7 @@
             <label class="form__field">
               <input
                 class="form__input"
+                id="name-input"
                 type="text"
                 name="user-name"
                 minlength="2"
@@ -98,6 +100,7 @@
             <label class="form__field">
               <input
                 class="form__input"
+                id="description-input"
                 type="text"
                 name="user-description"
                 minlength="2"
@@ -122,7 +125,7 @@
           aria-label="Закрыть"
         ></button>
 
-        <form class="form" novalidate>
+        <form name="add-card-form" class="form" novalidate>
           <h3 class="form__title">Новое место</h3>
 
           <fieldset class="form__input-container">
@@ -142,6 +145,7 @@
             <label class="form__field">
               <input
                 class="form__input form__input_color-light"
+                id="image-link-input"
                 type="url"
                 placeholder="Ссылка на картинку"
                 name="image-src"
@@ -157,10 +161,7 @@
     </div>
 
     <div class="popup popup-type_full-size">
-      <div
-        id="popup-zoom-image-form"
-        class="popup__inner popup-type_full-size__inner"
-      >
+      <div class="popup__inner popup-type_full-size__inner">
         <button
           class="popup__btn-close"
           type="button"

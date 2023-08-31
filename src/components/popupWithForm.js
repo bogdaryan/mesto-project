@@ -1,30 +1,57 @@
-import { Popup } from "./Popup.js";
+import Popup from "./Popup";
+import { validationConfig } from "../utils/constants";
+import FormValidator from "./FormValidator";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupElement, { onFormSubmit }) {
+  constructor(popupElement) {
     super(popupElement);
-    this._onFormSubmit = onFormSubmit;
-    this._popupForm = this._popupItem.querySelector(".form");
-    this._inputList = Array.from(
-      this._popupForm.querySelectorAll(".form__input")
-    );
-    this._submitButton = this._popupItem.querySelector(".form__submit");
-    this._submitButtonText = this._submitButton.textContent;
+    this._formOfPopup = popupElement.querySelector(".form");
+    this._validator = new FormValidator(validationConfig, this._formOfPopup);
   }
 
-  _collectInputValues() {
-    const formValues = {};
-    this._inputList.forEach((inputItem) => {
-      formValues[inputItem.name] = inputItem.value;
-    });
-    return formValues;
+  open() {
+    super.open();
+    this._validator.enableValidation();
   }
 
-  addEventListeners() {
-    super.addEventListeners();
-    this._popupForm.addEventListener("submit", (evt) => {
-      evt.preventDefault();
-      this._onFormSubmit(this._collectInputValues());
-    });
+  close() {
+    this._formOfPopup.reset();
+    this._validator.resetValidation();
+
+    super.close();
+  }
+
+  _renderLoading(
+    isLoading,
+    button,
+    buttonText = "Сохранить",
+    loadingText = "Сохранение..."
+  ) {
+    if (isLoading) {
+      button.textContent = loadingText;
+    } else {
+      button.textContent = buttonText;
+    }
+  }
+
+  handleSubmit(request, e, loadingText = "Сохранение...") {
+    e.preventDefault();
+
+    const submitButton = e.submitter;
+    const initialText = submitButton.textContent;
+    this._renderLoading(true, submitButton, initialText, loadingText);
+
+    request()
+      .then(() => {
+        const openedPopup = document.querySelector(".popup_opened");
+        new Popup(openedPopup).close();
+
+        submitButton.classList.add("form__submit_disabled");
+        submitButton.disabled = true;
+
+        e.target.reset();
+      })
+      .catch((err) => console.error(`Ошибка: ${err}`))
+      .finally(() => this._renderLoading(false, submitButton, initialText));
   }
 }

@@ -47,7 +47,10 @@ class Api {
     return this._request("/cards", {
       method: "POST",
       headers: this.headers,
-      body: JSON.stringify({ name, link }),
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
     });
   }
 
@@ -58,7 +61,7 @@ class Api {
     });
   }
 
-  dislikeCard(id) {
+  deleteLike(id) {
     return this._request(`/cards/likes/${id}`, {
       method: "DELETE",
       headers: this.headers,
