@@ -45,3 +45,6 @@ export const editAvatarForm = document.forms["edit-avatar"];
 export const formNewCard = document.forms["add-card-form"];
 
 export const avatarLink = editAvatarForm.elements["avatar-input"];
+
+// user
+export const user = JSON.parse(localStorage.getItem("user"));

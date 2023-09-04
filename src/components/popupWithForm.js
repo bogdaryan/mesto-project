@@ -1,12 +1,13 @@
 import Popup from "./Popup";
-import { validationConfig } from "../utils/constants";
-import FormValidator from "./FormValidator";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupElement) {
+  constructor(popupElement, validator, handleFormSubmit) {
     super(popupElement);
-    this._formOfPopup = popupElement.querySelector(".form");
-    this._validator = new FormValidator(validationConfig, this._formOfPopup);
+    this._form = popupElement.querySelector(".form");
+    this._validator = validator;
+    this._handleFormSubmit = handleFormSubmit;
+
+    this._addEventListener();
   }
 
   open() {
@@ -15,10 +16,9 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._formOfPopup.reset();
-    this._validator.resetValidation();
-
     super.close();
+    this._form.reset();
+    this._validator.resetValidation();
   }
 
   _renderLoading(
@@ -34,17 +34,16 @@ export default class PopupWithForm extends Popup {
     }
   }
 
-  handleSubmit(request, e, loadingText = "Сохранение...") {
+  handleSubmit(e, loadingText = "Сохранение...") {
     e.preventDefault();
 
     const submitButton = e.submitter;
     const initialText = submitButton.textContent;
     this._renderLoading(true, submitButton, initialText, loadingText);
 
-    request()
+    this._handleFormSubmit()
       .then(() => {
-        const openedPopup = document.querySelector(".popup_opened");
-        new Popup(openedPopup).close();
+        this.close();
 
         submitButton.classList.add("form__submit_disabled");
         submitButton.disabled = true;
@@ -53,5 +52,9 @@ export default class PopupWithForm extends Popup {
       })
       .catch((err) => console.error(`Ошибка: ${err}`))
       .finally(() => this._renderLoading(false, submitButton, initialText));
+  }
+
+  _addEventListener() {
+    this._form.addEventListener("submit", this.handleSubmit.bind(this));
   }
 }
