@@ -1,45 +1,30 @@
-export function handleProfileFormSubmit() {
-  function makeRequest() {
-    return api
-      .setUserInfo(formUserName.value, formUserDescription.value)
-      .then((userData) => user.setUserData(userData))
-      .catch((err) => console.error(`Ошибка: ${err}`));
+function renderLoading(
+  isLoading,
+  button,
+  buttonText = "Сохранить",
+  loadingText = "Сохранение..."
+) {
+  if (isLoading) {
+    button.textContent = loadingText;
+  } else {
+    button.textContent = buttonText;
   }
-
-  return makeRequest();
 }
 
-export function handleEditAvatarFormSubmit() {
-  function makeRequest() {
-    return api
-      .setUserAvatar({ avatar: avatarLink.value })
-      .then((userData) => {
-        user.setUserAvatar(userData);
-      })
-      .catch((err) => console.error(`Ошибка: ${err}`));
-  }
-  return makeRequest();
-}
+export function submit(request, e, loadingText = "Сохранение...") {
+  e.preventDefault();
 
-const {
-  ["title-input"]: nameImageInput,
-  ["image-link-input"]: linkImageInput,
-} = formNewCard.elements;
+  const submitButton = e.submitter;
+  const initialText = submitButton.textContent;
+  renderLoading(true, submitButton, initialText, loadingText);
 
-const cardList = document.querySelector(cardListSelector);
+  request()
+    .then(() => {
+      submitButton.classList.add("form__submit_disabled");
+      submitButton.disabled = true;
 
-const pushCardToList = (card) => {
-  const cardElement = new Card(card).generate();
-  cardList.append(cardElement);
-};
-
-export function handleAddCardFormSubmit() {
-  function makeRequest() {
-    return api
-      .postCard(nameImageInput.value, linkImageInput.value)
-      .then((card) => pushCardToList(card))
-      .catch((err) => console.error(`Ошибка: ${err}`));
-  }
-
-  return makeRequest();
+      e.target.reset();
+    })
+    .catch((err) => console.error(`Ошибка: ${err}`))
+    .finally(() => renderLoading(false, submitButton, initialText));
 }

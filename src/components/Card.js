@@ -1,5 +1,4 @@
 import { user } from "../utils/constants";
-import { api } from "./Api";
 
 export default class Card {
   constructor(itemCard, { popupWithImage, setLike, deleteLike, deleteCard }) {
@@ -52,38 +51,28 @@ export default class Card {
     );
 
     if (!isLikeExist) {
-      this.setLike();
+      this._setLike();
     } else {
-      this.deleteLike();
+      this._deleteLike();
     }
   }
 
-  setLike() {
-    this._setLike(this._itemCard._id)
-      .then((card) => {
-        this._btnLike.classList.add("card__btn-like_active");
-        this._numberLikes.textContent = card.likes.length;
-      })
-      .catch((e) => console.error(e));
+  setLike(likesCount) {
+    this._btnLike.classList.add("card__btn-like_active");
+    this._numberLikes.textContent = likesCount;
   }
 
-  deleteLike() {
-    this._deleteLike(this._itemCard._id)
-      .then((card) => {
-        this._btnLike.classList.remove("card__btn-like_active");
-        this._numberLikes.textContent = card.likes.length;
-      })
-      .catch((e) => console.error(e));
+  deleteLike(likesCount) {
+    this._btnLike.classList.remove("card__btn-like_active");
+    this._numberLikes.textContent = likesCount;
   }
 
   _open() {
     this._popup.open(this._title.textContent, this._image);
   }
 
-  _delete() {
-    this._deleteCard(this._itemCard._id)
-      .then(() => this.remove(this._element))
-      .catch((e) => console.error(e));
+  delete() {
+    this.remove(this._element);
   }
 
   _setClassLikedCards() {
@@ -98,7 +87,7 @@ export default class Card {
 
   _setEventListener() {
     this._btnLike.addEventListener("click", this._toggleLike.bind(this));
-    this._btnDelete.addEventListener("click", this._delete.bind(this));
+    this._btnDelete.addEventListener("click", this._deleteCard.bind(this));
     this._image.addEventListener("click", this._open.bind(this));
   }
 

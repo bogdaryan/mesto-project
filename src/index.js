@@ -11,12 +11,12 @@ import {
   profileName,
   userDescription,
   editForm,
-  avatarLink,
   editAvatarForm,
   formNewCard,
   popupFullImage,
   validationConfig,
 } from "./utils/constants";
+import { submit } from "./utils/utils";
 
 import UserInfo from "./components/UserInfo";
 import { api } from "./components/Api";
@@ -35,18 +35,31 @@ const user = new UserInfo(profileSelectors);
 const popupEditProfileInfo = new PopupWithForm(
   popupEditProfile,
   validatorEditForm,
-  handleProfileFormSubmit
+  {
+    handleFormSubmit: (
+      { "user-name": name, "user-description": description },
+      evt
+    ) => {
+      const request = handleProfileFormSubmit(name, description);
+      submit(request, evt);
+    },
+  }
 );
-const popupUserAvatar = new PopupWithForm(
-  popupAvatar,
-  validatorAvatarForm,
-  handleEditAvatarFormSubmit
-);
-const popupNewCard = new PopupWithForm(
-  popupAddCard,
-  validatorFormNewCard,
-  handleAddCardFormSubmit
-);
+
+const popupUserAvatar = new PopupWithForm(popupAvatar, validatorAvatarForm, {
+  handleFormSubmit: ({ "avatar-input": link }, evt) => {
+    const request = handleEditAvatarFormSubmit(link);
+    submit(request, evt);
+  },
+});
+
+const popupNewCard = new PopupWithForm(popupAddCard, validatorFormNewCard, {
+  handleFormSubmit: ({ "image-title": title, "image-src": link }, evt) => {
+    const request = handleAddCardFormSubmit(title, link);
+
+    submit(request, evt);
+  },
+});
 
 const popupWithImage = new PopupWithImage(popupFullImage);
 let cardsSection = new Section({}, cardListSelector);
@@ -67,27 +80,32 @@ Promise.all([api.getUser(), api.getCards()])
   .catch((e) => console.error(e));
 
 function createCard(itemCard) {
+  const id = itemCard._id;
+
   const card = new Card(itemCard, {
     popupWithImage,
-    setLike: api.setLike.bind(api),
-    deleteLike: api.deleteLike.bind(api),
-    deleteCard: api.deleteCard.bind(api),
+    setLike: () => {
+      api.setLike(id).then(({ likes }) => {
+        card.setLike(likes.length);
+      });
+    },
+    deleteLike: () => {
+      api.deleteLike(id).then(({ likes }) => {
+        card.deleteLike(likes.length);
+      });
+    },
+    deleteCard: () => {
+      api.deleteCard(id).then(() => card.delete());
+    },
   });
 
-  return cardsSection.addItem(card.generate());
+  cardsSection.addItem(card.generate());
 }
 
 // Popup //
 
-const {
-  ["user-name"]: formUserName,
-  ["user-description"]: formUserDescription,
-} = editForm.elements;
-
-const {
-  ["title-input"]: nameImageInput,
-  ["image-link-input"]: linkImageInput,
-} = formNewCard.elements;
+const { "user-name": formUserName, "user-description": formUserDescription } =
+  editForm.elements;
 
 addCardBtn.addEventListener("click", () => popupNewCard.open());
 editAvatarBtn.addEventListener("click", () => popupUserAvatar.open());
@@ -101,36 +119,36 @@ profileEditBtn.addEventListener("click", () => {
 
 // handle form //
 
-function handleProfileFormSubmit() {
+function handleProfileFormSubmit(name, description) {
   function makeRequest() {
     return api
-      .setUserInfo(formUserName.value, formUserDescription.value)
+      .setUserInfo(name, description)
       .then((userData) => user.setUserData(userData))
       .catch((err) => console.error(`Ошибка: ${err}`));
   }
 
-  return makeRequest();
+  return makeRequest;
 }
 
-function handleEditAvatarFormSubmit() {
+function handleEditAvatarFormSubmit(link) {
   function makeRequest() {
     return api
-      .setUserAvatar({ avatar: avatarLink.value })
+      .setUserAvatar({ avatar: link })
       .then((userData) => {
         user.setUserAvatar(userData);
       })
       .catch((err) => console.error(`Ошибка: ${err}`));
   }
-  return makeRequest();
+  return makeRequest;
 }
 
-function handleAddCardFormSubmit() {
+function handleAddCardFormSubmit(name, link) {
   function makeRequest() {
     return api
-      .postCard(nameImageInput.value, linkImageInput.value)
+      .postCard(name, link)
       .then((card) => createCard(card))
       .catch((err) => console.error(`Ошибка: ${err}`));
   }
 
-  return makeRequest();
+  return makeRequest;
 }
