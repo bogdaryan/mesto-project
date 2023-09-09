@@ -11,7 +11,7 @@ function renderLoading(
   }
 }
 
-export function submit(request, e, loadingText = "Сохранение...") {
+export function submit(request, e, popup, loadingText = "Сохранение...") {
   e.preventDefault();
 
   const submitButton = e.submitter;
@@ -19,12 +19,7 @@ export function submit(request, e, loadingText = "Сохранение...") {
   renderLoading(true, submitButton, initialText, loadingText);
 
   request()
-    .then(() => {
-      submitButton.classList.add("form__submit_disabled");
-      submitButton.disabled = true;
-
-      e.target.reset();
-    })
+    .then(() => popup.close())
     .catch((err) => console.error(`Ошибка: ${err}`))
     .finally(() => renderLoading(false, submitButton, initialText));
 }

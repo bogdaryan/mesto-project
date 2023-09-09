@@ -36,28 +36,32 @@ const popupEditProfileInfo = new PopupWithForm(
   popupEditProfile,
   validatorEditForm,
   {
-    handleFormSubmit: (
+    handleFormSubmit: function (
       { "user-name": name, "user-description": description },
-      evt
-    ) => {
+      evt,
+      popup
+    ) {
       const request = handleProfileFormSubmit(name, description);
-      submit(request, evt);
+      submit(request, evt, popup);
     },
   }
 );
 
 const popupUserAvatar = new PopupWithForm(popupAvatar, validatorAvatarForm, {
-  handleFormSubmit: ({ "avatar-input": link }, evt) => {
+  handleFormSubmit: ({ "avatar-input": link }, evt, popup) => {
     const request = handleEditAvatarFormSubmit(link);
-    submit(request, evt);
+    submit(request, evt, popup);
   },
 });
 
 const popupNewCard = new PopupWithForm(popupAddCard, validatorFormNewCard, {
-  handleFormSubmit: ({ "image-title": title, "image-src": link }, evt) => {
+  handleFormSubmit: (
+    { "image-title": title, "image-src": link },
+    evt,
+    popup
+  ) => {
     const request = handleAddCardFormSubmit(title, link);
-
-    submit(request, evt);
+    submit(request, evt, popup);
   },
 });
 
@@ -85,17 +89,26 @@ function createCard(itemCard) {
   const card = new Card(itemCard, {
     popupWithImage,
     setLike: () => {
-      api.setLike(id).then(({ likes }) => {
-        card.setLike(likes.length);
-      });
+      api
+        .setLike(id)
+        .then(({ likes }) => {
+          card.setLike(likes.length);
+        })
+        .catch((err) => console.error(`Ошибка: ${err}`));
     },
     deleteLike: () => {
-      api.deleteLike(id).then(({ likes }) => {
-        card.deleteLike(likes.length);
-      });
+      api
+        .deleteLike(id)
+        .then(({ likes }) => {
+          card.deleteLike(likes.length);
+        })
+        .catch((err) => console.error(`Ошибка: ${err}`));
     },
     deleteCard: () => {
-      api.deleteCard(id).then(() => card.delete());
+      api
+        .deleteCard(id)
+        .then(() => card.delete())
+        .catch((err) => console.error(`Ошибка: ${err}`));
     },
   });
 
