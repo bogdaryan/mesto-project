@@ -1,76 +1,167 @@
 import "./pages/index.css";
-import { generateCards } from "./components/cards.js";
-import { editPopup, popupEditAvatar } from "./components/modal.js";
 import {
-  closePopup,
+  profileSelectors,
+  cardListSelector,
+  addCardBtn,
+  profileEditBtn,
+  popupEditProfile,
+  popupAddCard,
+  popupAvatar,
+  editAvatarBtn,
   profileName,
   userDescription,
-  formUserName,
-  formUserDescription,
   editForm,
-  handleSubmit,
-} from "./components/utils.js";
-import { enableValidation } from "./components/validate.js";
-import {
-  getUser,
-  setUserInfo,
-  setUserAvatar,
-  getCards,
-} from "./components/api.js";
+  editAvatarForm,
+  formNewCard,
+  popupFullImage,
+  validationConfig,
+} from "./utils/constants";
+import { submit } from "./utils/utils";
 
-const avatarImage = document.querySelector(".profile__image");
-const editAvatarForm = document.forms["edit-avatar"];
-const avatarLink = editAvatarForm.elements["avatar-input"];
+import UserInfo from "./components/UserInfo";
+import { api } from "./components/Api";
+import Card from "./components/Card";
+import Section from "./components/Section";
+import PopupWithForm from "./components/PopupWithForm";
+import PopupWithImage from "./components/PopupWithImage";
+import FormValidator from "./components/FormValidator";
 
-getUser()
-  .then((user) => (avatarImage.src = user.avatar))
-  .catch((e) => console.error(e));
+const validatorAvatarForm = new FormValidator(validationConfig, editAvatarForm);
+const validatorEditForm = new FormValidator(validationConfig, editForm);
+const validatorFormNewCard = new FormValidator(validationConfig, formNewCard);
 
-Promise.all([getUser(), getCards()])
+const user = new UserInfo(profileSelectors);
+
+const popupEditProfileInfo = new PopupWithForm(
+  popupEditProfile,
+  validatorEditForm,
+  {
+    handleFormSubmit: function (
+      { "user-name": name, "user-description": description },
+      evt,
+      popup
+    ) {
+      const request = handleProfileFormSubmit(name, description);
+      submit(request, evt, popup);
+    },
+  }
+);
+
+const popupUserAvatar = new PopupWithForm(popupAvatar, validatorAvatarForm, {
+  handleFormSubmit: ({ "avatar-input": link }, evt, popup) => {
+    const request = handleEditAvatarFormSubmit(link);
+    submit(request, evt, popup);
+  },
+});
+
+const popupNewCard = new PopupWithForm(popupAddCard, validatorFormNewCard, {
+  handleFormSubmit: (
+    { "image-title": title, "image-src": link },
+    evt,
+    popup
+  ) => {
+    const request = handleAddCardFormSubmit(title, link);
+    submit(request, evt, popup);
+  },
+});
+
+const popupWithImage = new PopupWithImage(popupFullImage);
+let cardsSection = new Section({}, cardListSelector);
+
+Promise.all([api.getUser(), api.getCards()])
   .then((res) => {
     const [userData, cards] = res;
+    localStorage.setItem("user", JSON.stringify(userData));
 
-    generateCards(cards);
-    setCurrentUserInfo(userData);
+    cardsSection.renderItems({
+      rendererData: cards,
+      renderer: createCard,
+    });
+
+    user.setUserData(userData);
+    user.setUserAvatar(userData);
   })
   .catch((e) => console.error(e));
 
-// edit profile //
-function setCurrentUserInfo(user) {
-  profileName.textContent = user.name;
-  userDescription.textContent = user.about;
+function createCard(itemCard) {
+  const id = itemCard._id;
+
+  const card = new Card(itemCard, {
+    popupWithImage,
+    setLike: () => {
+      api
+        .setLike(id)
+        .then(({ likes }) => {
+          card.setLike(likes.length);
+        })
+        .catch((err) => console.error(`Ошибка: ${err}`));
+    },
+    deleteLike: () => {
+      api
+        .deleteLike(id)
+        .then(({ likes }) => {
+          card.deleteLike(likes.length);
+        })
+        .catch((err) => console.error(`Ошибка: ${err}`));
+    },
+    deleteCard: () => {
+      api
+        .deleteCard(id)
+        .then(() => card.delete())
+        .catch((err) => console.error(`Ошибка: ${err}`));
+    },
+  });
+
+  cardsSection.addItem(card.generate());
 }
 
-function handleProfileFormSubmit(e) {
-  function makeRequest() {
-    return setUserInfo(formUserName.value, formUserDescription.value).then(
-      (userData) => {
-        profileName.textContent = userData.name;
-        userDescription.textContent = userData.about;
-      }
-    );
-  }
-  handleSubmit(makeRequest, e);
-}
+// Popup //
 
-function handleEditAvatarFormSubmit(e) {
-  function makeRequest() {
-    return setUserAvatar({ avatar: avatarLink.value }).then((user) => {
-      avatarImage.src = user.avatar;
-    });
-  }
+const { "user-name": formUserName, "user-description": formUserDescription } =
+  editForm.elements;
 
-  handleSubmit(makeRequest, e);
-}
+addCardBtn.addEventListener("click", () => popupNewCard.open());
+editAvatarBtn.addEventListener("click", () => popupUserAvatar.open());
 
-enableValidation({
-  formSelector: "form",
-  inputSelector: ".form__input",
-  submitButtonSelector: ".form__submit",
-  inactiveButtonClass: "form__submit_disabled",
-  inputErrorClass: "form__input_type_error",
-  errorClass: "form__input-error_visible",
+profileEditBtn.addEventListener("click", () => {
+  formUserName.value = profileName.textContent;
+  formUserDescription.value = userDescription.textContent;
+
+  popupEditProfileInfo.open();
 });
 
-editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
-editForm.addEventListener("submit", handleProfileFormSubmit);
+// handle form //
+
+function handleProfileFormSubmit(name, description) {
+  function makeRequest() {
+    return api
+      .setUserInfo(name, description)
+      .then((userData) => user.setUserData(userData))
+      .catch((err) => console.error(`Ошибка: ${err}`));
+  }
+
+  return makeRequest;
+}
+
+function handleEditAvatarFormSubmit(link) {
+  function makeRequest() {
+    return api
+      .setUserAvatar({ avatar: link })
+      .then((userData) => {
+        user.setUserAvatar(userData);
+      })
+      .catch((err) => console.error(`Ошибка: ${err}`));
+  }
+  return makeRequest;
+}
+
+function handleAddCardFormSubmit(name, link) {
+  function makeRequest() {
+    return api
+      .postCard(name, link)
+      .then((card) => createCard(card))
+      .catch((err) => console.error(`Ошибка: ${err}`));
+  }
+
+  return makeRequest;
+}

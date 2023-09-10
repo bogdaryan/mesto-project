@@ -1,76 +1,81 @@
-const api = {
-  url: "https://nomoreparties.co/v1/plus-cohort-27",
-  headers: {
-    authorization: "47ce978d-8dd3-4a82-9cc9-4dd45f83b925",
-    "Content-Type": "application/json",
-  },
-};
+import { apiConfig } from "../utils/constants";
 
-function checkResponse(res) {
-  if (!res.ok) Promise.reject(`Ошибка ${res}`);
+class Api {
+  constructor({ url, headers }) {
+    this.baseUrl = url;
+    this.headers = headers;
+  }
 
-  return res.json();
+  _checkResponse(res) {
+    return res.ok ? res.json() : Promise.reject(`код ошибки: ${res.status}`);
+  }
+
+  _request(path, options) {
+    return fetch(`${this.baseUrl}${path}`, options).then(
+      this._checkResponse.bind(this)
+    );
+  }
+
+  getUser() {
+    return this._request("/users/me", { headers: this.headers });
+  }
+
+  getCards() {
+    return this._request("/cards", { headers: this.headers });
+  }
+
+  setUserInfo(name, about) {
+    return this._request("/users/me", {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        name: name,
+        about: about,
+      }),
+    });
+  }
+
+  setUserAvatar(link) {
+    return this._request("/users/me/avatar", {
+      method: "PATCH",
+      headers: api.headers,
+      body: JSON.stringify(link),
+    });
+  }
+
+  postCard(name, link) {
+    return this._request("/cards", {
+      method: "POST",
+      headers: this.headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
+    });
+  }
+
+  setLike(id) {
+    return this._request(`/cards/likes/${id}`, {
+      method: "PUT",
+      headers: this.headers,
+    });
+  }
+
+  deleteLike(id) {
+    return this._request(`/cards/likes/${id}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+  }
+
+  deleteCard(id) {
+    return this._request(`/cards/${id}`, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+  }
 }
 
-const request = (url, options) => {
-  return fetch(api.url + url, options).then(checkResponse);
-};
+const api = new Api(apiConfig);
 
-export function getUser() {
-  return request("/users/me", { headers: api.headers });
-}
-
-export function setUserInfo(name, about) {
-  return request("/users/me", {
-    method: "PATCH",
-    headers: api.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about,
-    }),
-  });
-}
-
-export function setUserAvatar(link) {
-  return request("/users/me/avatar", {
-    method: "PATCH",
-    headers: api.headers,
-    body: JSON.stringify(link),
-  });
-}
-
-export function getCards() {
-  return request("/cards", { headers: api.headers });
-}
-
-export function postCard(name, link) {
-  return request("/cards", {
-    method: "POST",
-    headers: api.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
-    }),
-  });
-}
-
-export function deleteCard(id) {
-  return request(`/cards/${id}`, {
-    method: "DELETE",
-    headers: api.headers,
-  });
-}
-
-export function setLike(id) {
-  return request(`/cards/likes/${id}`, {
-    method: "PUT",
-    headers: api.headers,
-  });
-}
-
-export function deleteLike(id) {
-  return request(`/cards/likes/${id}`, {
-    method: "DELETE",
-    headers: api.headers,
-  });
-}
+export { api };
