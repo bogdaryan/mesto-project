@@ -1,12 +1,11 @@
-<h1 align="center"> Mesto (JavaScript) </h1>
-<h2 align="center">Проектная работа #3 (Спринт №1)</h2>
+Stack: JavaScript, HTML, CSS
 
-<h3>Технологии</h3>
-<ul >
-	<li>JavaScript</li>
-	<li>Webpack</li>
-	<li>HTML</li>
-	<li>CSS</li>
-	<li>Адаптивная вёрстка</li>
-	<li>БЭМ</li>
-</ul>
+![Stack](https://skillicons.dev/icons?i=js,html,css)
+
+* Используются парадигмы ООП 
+* Верстка по БЭМ
+* Сайт адаптивный
+* Клиент общается с сервером по REST API
+* Проект собирает Webpack
+
+
